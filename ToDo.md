@@ -6,11 +6,11 @@
 
 > ambos tem uma carteira e realizam transferencias
 
-1. [] Os usuarios devem ter
- - [] Nome
- - [] cpf (unico)
- - [] email (unico)
- - [] senha
+1. [x] Os usuarios devem ter
+ - [x] Nome
+ - [x] cpf/cnpj (unico)
+ - [x] email (unico)
+ - [x] senha
 
 2. [] Usuários podem enviar dinheiro (efetuar transferência) para lojistas e entre usuários
 3. [] Lojistas só recebem transferências
