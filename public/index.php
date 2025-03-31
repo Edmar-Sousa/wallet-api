@@ -10,7 +10,7 @@ $app = AppFactory::create();
 require __DIR__ . '/../config/database.php';
 
 // includes routes files
-require_once __DIR__ . '/../src/routes/api.php';
+require_once __DIR__ . '/../app/routes/api.php';
 
 
 $app->run();
