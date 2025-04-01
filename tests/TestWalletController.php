@@ -23,13 +23,16 @@ class TestWalletController extends TestCase
         parent::setUp();
 
         $this->app = $this->setUpApp();
-        $this->app->get('/', WalletController::class);
+        $this->app->post('/wallet', [WalletController::class, 'createWallet']);
     }
 
 
-    public function testReturnSuccess(): void
+    public function testCreateUserWallet(): void
     {
-        $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/wallet'
+        );
 
         $response = $this->app->handle($request);
 
