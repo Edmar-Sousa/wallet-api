@@ -35,6 +35,10 @@ class WalletRepository
 
     public function getWallet(int $id): Wallet|null
     {
-        return Wallet::where('id', $id)->first();
+        $wallet = Wallet::where('id', $id)->first();
+
+        $wallet->type = WalletType::from($wallet->type);
+
+        return $wallet;
     }
 }
