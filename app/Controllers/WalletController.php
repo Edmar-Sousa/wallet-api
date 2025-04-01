@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Enums\WalletType;
 use App\Models\Wallet;
 use App\Repositories\Wallet\WalletRepository;
+use App\Validators\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -12,7 +14,20 @@ class WalletController
 
     public function createWallet(Request $request, Response $response): Response
     {
+        $walletValidator = ValidatorFactory::create(WalletType::USER);
         $data = json_decode($request->getBody()->getContents(), true);
+
+        $walletValidator->validate($data);
+
+        if (!$walletValidator->isValid()) {
+            $response->getBody()->write(json_encode([
+                'status' => 400,
+                'code' => 'validation_error',
+                'errors' => $walletValidator->getErrorsMessage(),
+            ]));
+
+            return $response->withStatus(400);
+        }
 
         $walletRepository = new WalletRepository();
         $wallet = $walletRepository->createUserWallet($data);
