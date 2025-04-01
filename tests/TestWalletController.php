@@ -34,6 +34,42 @@ class TestWalletController extends TestCase
         $this->app->post('/wallet/merchant', [WalletController::class, 'createMerchantWallet']);
     }
 
+    public function testCreateWalletMerchantInvalidData()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/wallet/user'
+        );
+
+        $stream = new StreamFactory();
+
+        $requestBody = $stream->createStream(json_encode([
+            'fullname' => '',
+            'cpfCnpj' => '92.444.627/0011-30',
+            'email' => 'teste',
+            'password' => '123456',
+        ]));
+
+
+        $request = $request
+            ->withHeader('Content-Type', 'application/json')
+            ->withBody($requestBody);
+
+        $response = $this->app->handle($request);
+
+        $responseBody =  json_decode((string) $response->getBody(), true);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $responseBody['status']);
+        $this->assertEquals('validation_wallet_error', $responseBody['code']);
+
+        $this->assertArrayHasKey('errors', $responseBody);
+
+        $this->assertArrayHasKey('fullname', $responseBody['errors']);
+        $this->assertArrayHasKey('cpfCnpj', $responseBody['errors']);
+        $this->assertArrayHasKey('email', $responseBody['errors']);
+    }
+
 
     public function testCreateWalletUserInvalidData()
     {
@@ -62,7 +98,7 @@ class TestWalletController extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals(400, $responseBody['status']);
-        $this->assertEquals('validation_error', $responseBody['code']);
+        $this->assertEquals('validation_wallet_error', $responseBody['code']);
 
         $this->assertArrayHasKey('errors', $responseBody);
 
