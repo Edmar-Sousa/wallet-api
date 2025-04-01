@@ -30,8 +30,21 @@ class TestWalletController extends TestCase
         $this->app = $this->setUpApp();
 
         $this->app->post('/wallet/user', [WalletController::class, 'createWallet']);
+        $this->app->post('/wallet/merchant', [WalletController::class, 'createMerchantWallet']);
     }
 
+
+    private function createUser()
+    {
+        $requestBody = (new StreamFactory())->createStream(json_encode([
+            'fullname' => $this->faker->name(),
+            'cpfCnpj' => $this->faker->cpf(),
+            'email' => $this->faker->email(),
+            'password' => '123456',
+        ]));
+
+        return $requestBody;
+    }
 
     public function testCreateUserWallet(): void
     {
@@ -40,17 +53,28 @@ class TestWalletController extends TestCase
             '/wallet/user'
         );
 
-        $requestBody = (new StreamFactory())->createStream(json_encode([
-            'fullname' => $this->faker->name(),
-            'cpfCnpj' => $this->faker->cpf(),
-            'email' => $this->faker->email(),
-            'password' => '123456',
-        ]));
+
+        $request = $request
+            ->withHeader('Content-Type', 'application/json')
+            ->withBody($this->createUser());
+
+        $response = $this->app->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+
+    public function testCreateMerchantWallet(): void
+    {
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/wallet/merchant'
+        );
 
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($requestBody);
+            ->withBody($this->createUser());
 
         $response = $this->app->handle($request);
 
