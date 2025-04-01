@@ -27,4 +27,9 @@ class WalletRepository
         return $this->createWallet($data, WalletType::USER, 1000000);
     }
 
+    public function createMerchantWallet(array $data): Wallet
+    {
+        return $this->createWallet($data, WalletType::MERCHANT, 1000000);
+    }
+
 }
