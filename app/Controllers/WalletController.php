@@ -24,4 +24,19 @@ class WalletController
             ->withHeader('Content-Type', 'application/json');
     }
 
+
+
+    public function createMerchantWallet(Request $request, Response $response): Response
+    {
+        $data = json_decode($request->getBody()->getContents(), true);
+
+        $walletRepository = new WalletRepository();
+        $wallet = $walletRepository->createMerchantWallet($data);
+
+        $response->getBody()
+            ->write(json_encode($wallet));
+
+        return $response->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
+    }
 }
