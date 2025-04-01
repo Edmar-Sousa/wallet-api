@@ -20,11 +20,8 @@ class WalletController
         $walletValidator->validate($data);
 
         if (!$walletValidator->isValid()) {
-            $response->getBody()->write(json_encode([
-                'status' => 400,
-                'code' => 'validation_wallet_error',
-                'errors' => $walletValidator->getErrorsMessage(),
-            ]));
+            $response->getBody()
+                ->write(json_encode($walletValidator->getErrorObject()));
 
             return $response->withStatus(400);
         }
@@ -49,11 +46,8 @@ class WalletController
         $walletValidator->validate($data);
 
         if (!$walletValidator->isValid()) {
-            $response->getBody()->write(json_encode([
-                'status' => 400,
-                'code' => 'validation_wallet_error',
-                'errors' => $walletValidator->getErrorsMessage(),
-            ]));
+            $response->getBody()
+                ->write(json_encode($walletValidator->getErrorObject()));
 
             return $response->withStatus(400);
         }
