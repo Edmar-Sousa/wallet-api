@@ -35,6 +35,43 @@ class TestWalletController extends TestCase
     }
 
 
+    public function testCreateWalletUserInvalidData()
+    {
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/wallet/user'
+        );
+
+        $stream = new StreamFactory();
+
+        $requestBody = $stream->createStream(json_encode([
+            'fullname' => '',
+            'cpfCnpj' => '143.222.567-81',
+            'email' => 'teste',
+            'password' => '123456',
+        ]));
+
+
+        $request = $request
+            ->withHeader('Content-Type', 'application/json')
+            ->withBody($requestBody);
+
+        $response = $this->app->handle($request);
+
+        $responseBody =  json_decode((string) $response->getBody(), true);
+
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals(400, $responseBody['status']);
+        $this->assertEquals('validation_error', $responseBody['code']);
+
+        $this->assertArrayHasKey('errors', $responseBody);
+
+        $this->assertArrayHasKey('fullname', $responseBody['errors']);
+        $this->assertArrayHasKey('cpfCnpj', $responseBody['errors']);
+        $this->assertArrayHasKey('email', $responseBody['errors']);
+    }
+
+
     private function createUser($isMerchant = false): StreamInterface
     {
         $stream = new StreamFactory();
