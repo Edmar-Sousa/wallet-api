@@ -21,4 +21,9 @@ class Wallet extends Model
         'type',
     ];
 
+
+    protected $casts = [
+        'type',
+    ];
+
 }
