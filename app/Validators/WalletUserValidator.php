@@ -25,6 +25,15 @@ class WalletUserValidator implements ValidatorInterface
         return $this->errorsMessage;
     }
 
+    public function getErrorObject(): array
+    {
+        return [
+            'status' => 400,
+            'code' => 'validation_wallet_error',
+            'errors' => $this->getErrorsMessage(),
+        ];
+    }
+
     public function validate(array $data): void
     {
         try {
