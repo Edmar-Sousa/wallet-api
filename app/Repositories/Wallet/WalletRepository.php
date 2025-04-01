@@ -32,4 +32,9 @@ class WalletRepository
         return $this->createWallet($data, WalletType::MERCHANT, 1000000);
     }
 
+
+    public function getWallet(int $id): Wallet|null
+    {
+        return Wallet::where('id', $id)->first();
+    }
 }
