@@ -18,6 +18,7 @@ class Wallet extends Model
         'email',
         'password',
         'balance',
+        'type',
     ];
 
 }
