@@ -22,7 +22,7 @@ class WalletController
         if (!$walletValidator->isValid()) {
             $response->getBody()->write(json_encode([
                 'status' => 400,
-                'code' => 'validation_error',
+                'code' => 'validation_wallet_error',
                 'errors' => $walletValidator->getErrorsMessage(),
             ]));
 
