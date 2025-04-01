@@ -43,7 +43,20 @@ class WalletController
 
     public function createMerchantWallet(Request $request, Response $response): Response
     {
+        $walletValidator = ValidatorFactory::create(WalletType::MERCHANT);
         $data = json_decode($request->getBody()->getContents(), true);
+
+        $walletValidator->validate($data);
+
+        if (!$walletValidator->isValid()) {
+            $response->getBody()->write(json_encode([
+                'status' => 400,
+                'code' => 'validation_wallet_error',
+                'errors' => $walletValidator->getErrorsMessage(),
+            ]));
+
+            return $response->withStatus(400);
+        }
 
         $walletRepository = new WalletRepository();
         $wallet = $walletRepository->createMerchantWallet($data);
