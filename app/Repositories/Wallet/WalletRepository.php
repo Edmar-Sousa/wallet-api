@@ -8,20 +8,23 @@ use App\Models\Wallet;
 class WalletRepository
 {
 
-    public function createUserWallet(array $data): Wallet
+    private function createWallet(array $data, WalletType $type, int $balance = 0): Wallet
     {
-        $wallet = Wallet::create([
+        return Wallet::create([
             'fullname' => $data['fullname'],
             'cpfCnpj'  => $data['cpfCnpj'],
             'email'    => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 13]),
 
             // balance to tests
-            'balance'  => 1000000,
-            'type'     => WalletType::USER,
+            'balance'  => $balance,
+            'type'     => $type,
         ]);
+    }
 
-        return $wallet;
+    public function createUserWallet(array $data): Wallet
+    {
+        return $this->createWallet($data, WalletType::USER, 1000000);
     }
 
 }
