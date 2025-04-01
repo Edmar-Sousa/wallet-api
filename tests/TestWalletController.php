@@ -35,13 +35,15 @@ class TestWalletController extends TestCase
     }
 
 
-    private function createUser(): StreamInterface
+    private function createUser($isMerchant = false): StreamInterface
     {
         $stream = new StreamFactory();
 
+        $cpfCnpj = $isMerchant ? $this->faker->cnpj() : $this->faker->cpf();
+
         return $stream->createStream(json_encode([
             'fullname' => $this->faker->name(),
-            'cpfCnpj' => $this->faker->cpf(),
+            'cpfCnpj' => $cpfCnpj,
             'email' => $this->faker->email(),
             'password' => '123456',
         ]));
@@ -76,7 +78,7 @@ class TestWalletController extends TestCase
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($this->createUser());
+            ->withBody($this->createUser(true));
 
         $response = $this->app->handle($request);
 
