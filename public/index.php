@@ -9,8 +9,8 @@ $app = AppFactory::create();
 // eloquent
 require __DIR__ . '/../config/database.php';
 
-// includes routes files
-require_once __DIR__ . '/../app/routes/api.php';
+// includes Routes files
+require_once __DIR__ . '/../app/Routes/api.php';
 
 
 $app->run();
