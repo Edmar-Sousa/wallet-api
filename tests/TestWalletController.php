@@ -5,6 +5,7 @@ namespace Tests;
 use App\Controllers\WalletController;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 use Slim\App;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Faker\Factory as Faker;
@@ -34,16 +35,17 @@ class TestWalletController extends TestCase
     }
 
 
-    private function createUser()
+    private function createUser(): StreamInterface
     {
-        $requestBody = (new StreamFactory())->createStream(json_encode([
+        $stream = new StreamFactory();
+
+        return $stream->createStream(json_encode([
             'fullname' => $this->faker->name(),
             'cpfCnpj' => $this->faker->cpf(),
             'email' => $this->faker->email(),
             'password' => '123456',
         ]));
 
-        return $requestBody;
     }
 
     public function testCreateUserWallet(): void
