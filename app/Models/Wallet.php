@@ -22,8 +22,4 @@ class Wallet extends Model
     ];
 
 
-    protected $casts = [
-        'type',
-    ];
-
 }
