@@ -80,7 +80,7 @@ class TestTransferController extends TestCase
 
         $response = $this->app->handle($request);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(201, $response->getStatusCode());
     }
 
 }
