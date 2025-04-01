@@ -1,0 +1,81 @@
+<?php
+
+namespace App\UseCases;
+
+use App\Clients\ClientAuthorization;
+use App\Enums\WalletType;
+use App\Models\Transfer;
+use App\Models\Wallet;
+use App\Repositories\Transfer\TransferRepository;
+use App\Repositories\Wallet\WalletRepository;
+
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+class UseCaseTransfer
+{
+
+
+    private function checksWalletsExists(Wallet|null $payer, Wallet|null $payee): void
+    {
+        if (is_null($payer))
+            throw new RuntimeException('Wallet payer not found');
+
+        if (is_null($payee))
+            throw new RuntimeException('Wallet payee not found');
+    }
+
+    private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
+    {
+        if ($walletPayer->type == WalletType::MERCHANT)
+            throw new RuntimeException('Merchant user not allowed to transfer');
+
+        if ($walletPayer->balance - $amount < 0)
+            throw new RuntimeException('Wallet not has balance to complete transfer');
+    }
+
+
+    public function transferBetweenWallets(array $transferData): Transfer
+    {
+        Capsule::beginTransaction();
+
+        $walletRepository = new WalletRepository();
+        $amountTransfer = $transferData['value'] * 100;
+
+        $walletPayer = $walletRepository->getWallet($transferData['payer']);
+        $walletPayee = $walletRepository->getWallet($transferData['payee']);
+
+
+        $this->checksWalletsExists($walletPayer, $walletPayee);
+        $this->checkWalletAllowedToTransfer($walletPayer, $amountTransfer);
+
+        try {
+            $client = new ClientAuthorization();
+
+            if (!$client->isAuthorized())
+                throw new RuntimeException('Transaction not authorized');
+
+            $transferRepository = new TransferRepository();
+            $transfer = $transferRepository->createTransfer([
+                'payer' => $walletPayer,
+                'payee' => $walletPayee,
+                'value' => $amountTransfer,
+            ]);
+
+            $walletRepository->debtWallet($walletPayer, $amountTransfer);
+            $walletRepository->creditWallet($walletPayee, $amountTransfer);
+
+            Capsule::commit();
+            return $transfer;
+        }
+
+        catch (RuntimeException $e) {
+            Capsule::rollBack();
+
+            throw new RuntimeException('Error when making transfer');
+        }
+
+    }
+
+}
