@@ -56,8 +56,6 @@ class UseCaseTransfer
         if ($walletPayer->balance - $amount < 0) {
             throw new WalletBalanceInsufficientException(
                 'Wallet not has balance to complete transfer',
-                'wallet_balance_insufficient',
-                403,
                 [ 'payer_wallet' => 'Saldo insuficiente para completar transferencia' ]
             );
         }
