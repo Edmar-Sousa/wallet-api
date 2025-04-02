@@ -19,4 +19,15 @@ class Transfer extends Model
         'value',
     ];
 
+
+    public function walletPayee()
+    {
+        return $this->hasOne(Wallet::class, 'id', 'payee');
+    }
+
+    public function walletPayer()
+    {
+        return $this->hasOne(Wallet::class, 'id', 'payer');
+    }
+
 }
