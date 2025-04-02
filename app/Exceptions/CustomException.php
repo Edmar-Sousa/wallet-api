@@ -11,7 +11,7 @@ class CustomException extends RuntimeException
     private string $errorCode;
     private array $errorMessage;
 
-    final public function __construct(string $log, string $code, int $statusCode, array $messages = [])
+    public function __construct(string $log, string $code, int $statusCode, array $messages = [])
     {
         parent::__construct($log, $statusCode);
 
