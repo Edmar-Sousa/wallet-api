@@ -7,6 +7,8 @@ namespace App\Controllers;
 use App\Enums\WalletType;
 use App\Exceptions\CustomException;
 use App\Repositories\Wallet\WalletRepository;
+use App\UseCases\UseCaseTransfer;
+use App\UseCases\UseCaseWallet;
 use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -27,15 +29,17 @@ class WalletController
             return $response->withStatus(400);
         }
 
+        $walletUserCase = new UseCaseWallet();
+
         try {
-            $walletRepository = new WalletRepository();
-            $wallet = $walletRepository->createUserWallet($data);
-    
+            $wallet = $walletUserCase->createWallet($data, WalletType::USER);
+
             $response->getBody()
                 ->write(json_encode($wallet));
-    
+
             return $response->withStatus(201)
                 ->withHeader('Content-Type', 'application/json');
+
         } catch (CustomException $err) {
             $response->getBody()
                 ->write(json_encode($err->getErrorObject()));
@@ -61,15 +65,17 @@ class WalletController
             return $response->withStatus(400);
         }
 
+        $walletUserCase = new UseCaseWallet();
+
         try {
-            $walletRepository = new WalletRepository();
-            $wallet = $walletRepository->createMerchantWallet($data);
-    
+            $wallet = $walletUserCase->createWallet($data, WalletType::MERCHANT);
+
             $response->getBody()
                 ->write(json_encode($wallet));
-    
+
             return $response->withStatus(201)
                 ->withHeader('Content-Type', 'application/json');
+
         } catch (CustomException $err) {
             $response->getBody()
                 ->write(json_encode($err->getErrorObject()));
