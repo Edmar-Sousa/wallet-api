@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Clients\ClientAuthorization;
 use App\Enums\WalletType;
+use App\Exceptions\PicPayAuthorizationException;
 use App\Exceptions\WalletBalanceInsufficientException;
 use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
@@ -12,7 +13,6 @@ use App\Models\Wallet;
 use App\Repositories\Transfer\TransferRepository;
 use App\Repositories\Wallet\WalletRepository;
 
-use Illuminate\Support\Facades\DB;
 use RuntimeException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -81,8 +81,14 @@ class UseCaseTransfer
         try {
             $client = new ClientAuthorization();
 
-            if (!$client->isAuthorized())
-                throw new RuntimeException('Transaction not authorized');
+            if (!$client->isAuthorized()) {
+                throw new PicPayAuthorizationException(
+                    'Transaction not authorized',
+                    'transaction_not_authorized',
+                    403,
+                    [ 'authorization' => 'A transferência não foi autorizada, tente novamente' ]
+                );
+            }
 
             $transferRepository = new TransferRepository();
             $transfer = $transferRepository->createTransfer([
