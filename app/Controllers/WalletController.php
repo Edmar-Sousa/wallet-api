@@ -6,7 +6,7 @@ namespace App\Controllers;
 
 use App\Enums\WalletType;
 use App\Repositories\Wallet\WalletRepository;
-use App\Validators\ValidatorFactory;
+use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

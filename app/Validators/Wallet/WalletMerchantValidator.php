@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validators;
+namespace App\Validators\Wallet;
 
 use App\Interfaces\ValidatorInterface;
 use Respect\Validation\Exceptions\NestedValidationException;

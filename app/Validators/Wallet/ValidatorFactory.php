@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Validators;
+namespace App\Validators\Wallet;
 
 use App\Enums\WalletType;
 use App\Interfaces\ValidatorInterface;
