@@ -6,8 +6,6 @@ namespace App\Controllers;
 
 use App\Enums\WalletType;
 use App\Exceptions\CustomException;
-use App\Repositories\Wallet\WalletRepository;
-use App\UseCases\UseCaseTransfer;
 use App\UseCases\UseCaseWallet;
 use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -15,7 +13,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class WalletController
 {
-
     public function findWallet(Request $request, Response $response, array $args): Response
     {
         try {
@@ -27,9 +24,7 @@ class WalletController
 
             return $response->withStatus(201)
                 ->withHeader('Content-Type', 'application/json');
-        }
-
-        catch (CustomException $err) {
+        } catch (CustomException $err) {
             $response->getBody()
                 ->write(json_encode($err->getErrorObject()));
 

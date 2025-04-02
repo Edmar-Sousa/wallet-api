@@ -11,10 +11,10 @@ use App\Repositories\Wallet\WalletRepository;
 
 class UseCaseWallet
 {
-    public function findWallet(int $walletId)
+    public function findWallet(string $walletId)
     {
         $walletRepository = new WalletRepository();
-        $wallet = $walletRepository->getWallet($walletId);
+        $wallet = $walletRepository->getWallet((int) $walletId);
 
         if ($wallet === null) {
             throw new WalletNotFoundException(

@@ -9,24 +9,23 @@ use Respect\Validation\Validator as v;
 
 class WalletMerchantValidator implements ValidatorInterface
 {
-
     public function validate(array $data): void
     {
         try {
             $validator = v::key(
-                    'fullname', 
-                    v::stringType()->notEmpty()->setTemplate('O campo nome completo deve ser um texto')
-                )
+                'fullname',
+                v::stringType()->notEmpty()->setTemplate('O campo nome completo deve ser um texto')
+            )
                 ->key(
-                    'email', 
+                    'email',
                     v::email()->notEmpty()->setTemplate('O campo deve ser um e-mail válido')
                 )
                 ->key(
-                    'password', 
+                    'password',
                     v::stringType()->notEmpty()->setTemplate('O campo senha deve ser um texto')
                 )
                 ->key(
-                    'cpfCnpj', 
+                    'cpfCnpj',
                     v::cnpj()->notEmpty()->setTemplate('O campo deve ser um CNPJ válido')
                 );
 

@@ -7,7 +7,6 @@ namespace App\Repositories\Wallet;
 use App\Enums\WalletType;
 use App\Exceptions\CreateWalletException;
 use App\Models\Wallet;
-use Exception;
 
 class WalletRepository
 {
@@ -68,6 +67,10 @@ class WalletRepository
         $wallet = Wallet::where('id', $id)
             ->first();
 
+        if ($wallet !== null) {
+            $wallet->type = WalletType::from($wallet->type);
+        }
+
         return $wallet;
     }
 
@@ -77,7 +80,9 @@ class WalletRepository
             ->lockForUpdate()
             ->first();
 
-        $wallet->type = WalletType::from($wallet->type);
+        if ($wallet !== null) {
+            $wallet->type = WalletType::from($wallet->type);
+        }
 
         return $wallet;
     }
