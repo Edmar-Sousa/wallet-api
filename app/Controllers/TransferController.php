@@ -2,11 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Repositories\Transfer\TransferRepository;
-use App\Repositories\Wallet\WalletRepository;
+use App\Exceptions\CustomException;
 use App\UseCases\UseCaseTransfer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+
+use RuntimeException;
 
 class TransferController
 {
@@ -16,15 +17,26 @@ class TransferController
         $data = json_decode($request->getBody()->getContents(), true);
         $transferUseCase = new UseCaseTransfer();
 
-        $transfer = $transferUseCase->transferBetweenWallets($data);
+        try {
+            $transfer = $transferUseCase->transferBetweenWallets($data);
 
-        // TODO: send notification
+            // TODO: send notification
 
-        $response->getBody()
-            ->write(json_encode($transfer));
+            $response->getBody()
+                ->write(json_encode($transfer));
 
-        return $response->withStatus(201)
-            ->withHeader('Content-Type', 'application/json');
+            return $response->withStatus(201)
+                ->withHeader('Content-Type', 'application/json');
+        }
+
+        catch (CustomException $err)
+        {
+            $response->getBody()
+                ->write(json_encode($err->getErrorObject()));
+
+            return $response->withStatus($err->getCode())
+                ->withHeader('Content-Type', 'application/json');
+        }
     }
 
 }
