@@ -38,6 +38,58 @@ class UseCaseTransfer
         }
     }
 
+
+    public function cancelTransfer(int $transferId): Transfer
+    {
+        $walletRepository = new WalletRepository();
+        $transferRepository = new TransferRepository();
+
+
+        $transfer = $transferRepository->getTransferWithId($transferId);
+
+        $amountTransfer = intval(floatval($transfer->value) * 100);
+
+        $walletPayer = $transfer->walletPayee;
+        $walletPayee = $transfer->walletPayer;
+
+        $this->checksWalletsExists($walletPayer, $walletPayee);
+        $this->checkWalletAllowedToTransfer($walletPayer, $amountTransfer);
+
+        try {
+            Capsule::beginTransaction();
+
+            $client = new ClientAuthorization();
+
+            if (!$client->isAuthorized()) {
+                throw new PicPayAuthorizationException(
+                    'Transaction not authorized',
+                    [ 'authorization' => 'A transferência não foi autorizada, tente novamente' ]
+                );
+            }
+    
+            $transfer = $transferRepository->createTransfer([
+                'payer' => $walletPayer,
+                'payee' => $walletPayee,
+                'value' => $amountTransfer,
+            ]);
+
+            $walletRepository->debtWallet($walletPayer, $amountTransfer);
+            $walletRepository->creditWallet($walletPayee, $amountTransfer);
+
+            $transferRepository->deleteTransferWithId($transferId);
+            Capsule::commit();
+
+            return $transfer;
+        } catch (RuntimeException $e) {
+            Capsule::rollBack();
+
+            throw new TransferException(
+                'Error when making transfer',
+                [ 'transfer' => 'Erro ao realizar transferência' ]
+            );
+        }
+    }
+
     private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
     {
         if ($walletPayer->type == WalletType::MERCHANT) {
@@ -58,8 +110,6 @@ class UseCaseTransfer
 
     public function transferBetweenWallets(array $transferData): Transfer
     {
-        Capsule::beginTransaction();
-
         $walletRepository = new WalletRepository();
         $amountTransfer = intval(floatval($transferData['value']) * 100);
 
@@ -71,6 +121,8 @@ class UseCaseTransfer
         $this->checkWalletAllowedToTransfer($walletPayer, $amountTransfer);
 
         try {
+            Capsule::beginTransaction();
+
             $client = new ClientAuthorization();
 
             if (!$client->isAuthorized()) {
