@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Repositories\Transfer\TransferRepository;
 use App\Repositories\Wallet\WalletRepository;
+use App\UseCases\UseCaseTransfer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -13,24 +14,10 @@ class TransferController
     public function createTransfer(Request $request, Response $response): Response
     {
         $data = json_decode($request->getBody()->getContents(), true);
+        $transferUseCase = new UseCaseTransfer();
 
-        $walletRepository = new WalletRepository();
+        $transfer = $transferUseCase->transferBetweenWallets($data);
 
-        $walletPayer = $walletRepository->getWallet($data['payer']);
-        $walletPayee = $walletRepository->getWallet($data['payee']);
-
-        // TODO: check is wallets exists
-        // TODO: check balance of payer wallet
-        // TODO: check authorization
-
-        $transferRepository = new TransferRepository();
-        $transfer = $transferRepository->createTransfer([
-            'payer' => $walletPayer,
-            'payee' => $walletPayee,
-            'value' => $data['value'],
-        ]);
-
-        // TODO: update balance
         // TODO: send notification
 
         $response->getBody()
