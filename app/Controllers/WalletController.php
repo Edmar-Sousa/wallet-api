@@ -20,18 +20,10 @@ class WalletController
         $walletValidator = ValidatorFactory::create(WalletType::USER);
         $data = json_decode($request->getBody()->getContents(), true);
 
-        $walletValidator->validate($data);
-
-        if (!$walletValidator->isValid()) {
-            $response->getBody()
-                ->write(json_encode($walletValidator->getErrorObject()));
-
-            return $response->withStatus(400);
-        }
-
-        $walletUserCase = new UseCaseWallet();
-
         try {
+            $walletValidator->validate($data);
+            $walletUserCase = new UseCaseWallet();
+
             $wallet = $walletUserCase->createWallet($data, WalletType::USER);
 
             $response->getBody()
@@ -56,18 +48,10 @@ class WalletController
         $walletValidator = ValidatorFactory::create(WalletType::MERCHANT);
         $data = json_decode($request->getBody()->getContents(), true);
 
-        $walletValidator->validate($data);
-
-        if (!$walletValidator->isValid()) {
-            $response->getBody()
-                ->write(json_encode($walletValidator->getErrorObject()));
-
-            return $response->withStatus(400);
-        }
-
-        $walletUserCase = new UseCaseWallet();
-
         try {
+            $walletValidator->validate($data);
+            $walletUserCase = new UseCaseWallet();
+
             $wallet = $walletUserCase->createWallet($data, WalletType::MERCHANT);
 
             $response->getBody()
