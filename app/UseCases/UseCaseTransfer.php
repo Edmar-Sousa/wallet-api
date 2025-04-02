@@ -5,6 +5,7 @@ namespace App\UseCases;
 use App\Clients\ClientAuthorization;
 use App\Enums\WalletType;
 use App\Exceptions\PicPayAuthorizationException;
+use App\Exceptions\TransferException;
 use App\Exceptions\WalletBalanceInsufficientException;
 use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
@@ -107,7 +108,12 @@ class UseCaseTransfer
         catch (RuntimeException $e) {
             Capsule::rollBack();
 
-            throw new RuntimeException('Error when making transfer');
+            throw new TransferException(
+                'Error when making transfer',
+                'transfer_failed',
+                403,
+                [ 'transfer' => 'Erro ao realizar transferência' ]
+            );
         }
 
     }
