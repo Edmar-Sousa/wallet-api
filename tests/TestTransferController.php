@@ -65,7 +65,7 @@ class TestTransferController extends TestCase
         $stream = new StreamFactory();
 
         $transfer = $stream->createStream(json_encode([
-            'value' => 10000,
+            'value' => 10.50,
             'payer' => $userPayer->id,
             'payee' => $userPayee->id,
         ]));
