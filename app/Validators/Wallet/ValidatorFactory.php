@@ -6,7 +6,7 @@ namespace App\Validators\Wallet;
 
 use App\Enums\WalletType;
 use App\Interfaces\ValidatorInterface;
-use http\Exception\RuntimeException;
+use RuntimeException;
 
 class ValidatorFactory
 {
