@@ -6,7 +6,6 @@ use App\Models\Transfer;
 
 class TransferRepository
 {
-
     public function createTransfer(array $data)
     {
         $payer = $data['payer'];

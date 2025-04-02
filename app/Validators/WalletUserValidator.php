@@ -1,15 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Validators;
 
 use App\Interfaces\ValidatorInterface;
-
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
 
 class WalletUserValidator implements ValidatorInterface
 {
-
     protected bool $isValid = false;
 
     protected array $errorsMessage;
@@ -44,10 +44,7 @@ class WalletUserValidator implements ValidatorInterface
 
             $validator->assert($data);
             $this->isValid = true;
-        }
-
-        catch (NestedValidationException $err)
-        {
+        } catch (NestedValidationException $err) {
             $this->errorsMessage = $err->getMessages([
                 'string' => '{{name}} deve ser uma texto',
                 'empty' => '{{name}} não pode ser vazio',

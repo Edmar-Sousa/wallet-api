@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Repositories\Wallet;
 
@@ -7,7 +9,6 @@ use App\Models\Wallet;
 
 class WalletRepository
 {
-
     private function createWallet(array $data, WalletType $type, int $balance = 0): Wallet
     {
         return Wallet::create([

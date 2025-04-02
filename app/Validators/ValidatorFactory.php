@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Validators;
 
@@ -8,14 +10,13 @@ use http\Exception\RuntimeException;
 
 class ValidatorFactory
 {
-
     public static function create(WalletType $walletType): ValidatorInterface
     {
-        if ($walletType == WalletType::USER)
+        if ($walletType == WalletType::USER) {
             return new WalletUserValidator();
-
-        else if ($walletType == WalletType::MERCHANT)
+        } elseif ($walletType == WalletType::MERCHANT) {
             return new WalletMerchantValidator();
+        }
 
 
         throw new RuntimeException('Wallet type not supported');

@@ -6,5 +6,4 @@ use App\Exceptions\CustomException;
 
 class TransferException extends CustomException
 {
-
 }

@@ -13,14 +13,11 @@ use App\Models\Transfer;
 use App\Models\Wallet;
 use App\Repositories\Transfer\TransferRepository;
 use App\Repositories\Wallet\WalletRepository;
-
 use RuntimeException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class UseCaseTransfer
 {
-
-
     private function checksWalletsExists(Wallet|null $payer, Wallet|null $payee): void
     {
         if (is_null($payer)) {
@@ -45,7 +42,7 @@ class UseCaseTransfer
 
     private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
     {
-        if ($walletPayer->type == WalletType::MERCHANT)  {
+        if ($walletPayer->type == WalletType::MERCHANT) {
             throw new WalletMerchantException(
                 'Merchant user not allowed to transfer',
                 'wallet_not_allowed_transfer',
@@ -103,9 +100,7 @@ class UseCaseTransfer
 
             Capsule::commit();
             return $transfer;
-        }
-
-        catch (RuntimeException $e) {
+        } catch (RuntimeException $e) {
             Capsule::rollBack();
 
             throw new TransferException(
