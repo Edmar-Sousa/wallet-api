@@ -105,8 +105,6 @@ class UseCaseTransfer
 
             throw new TransferException(
                 'Error when making transfer',
-                'transfer_failed',
-                403,
                 [ 'transfer' => 'Erro ao realizar transferência' ]
             );
         }
