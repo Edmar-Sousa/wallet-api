@@ -35,7 +35,9 @@ class WalletRepository
 
     public function getWallet(int $id): Wallet|null
     {
-        $wallet = Wallet::where('id', $id)->first();
+        $wallet = Wallet::where('id', $id)
+            ->lockForUpdate()
+            ->first();
 
         $wallet->type = WalletType::from($wallet->type);
 
