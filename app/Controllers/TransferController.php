@@ -16,23 +16,15 @@ class TransferController
         $data = json_decode($request->getBody()->getContents(), true);
         $transferUseCase = new UseCaseTransfer();
 
-        try {
-            $transfer = $transferUseCase->transferBetweenWallets($data);
+        $transfer = $transferUseCase->transferBetweenWallets($data);
 
-            // TODO: send notification
+        // TODO: send notification
 
-            $response->getBody()
-                ->write(json_encode($transfer));
+        $response->getBody()
+            ->write(json_encode($transfer));
 
-            return $response->withStatus(201)
-                ->withHeader('Content-Type', 'application/json');
-        } catch (CustomException $err) {
-            $response->getBody()
-                ->write(json_encode($err->getErrorObject()));
-
-            return $response->withStatus($err->getCode())
-                ->withHeader('Content-Type', 'application/json');
-        }
+        return $response->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
     }
 
 }

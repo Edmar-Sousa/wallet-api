@@ -15,22 +15,14 @@ class WalletController
 {
     public function findWallet(Request $request, Response $response, array $args): Response
     {
-        try {
-            $walletUserCase = new UseCaseWallet();
-            $wallet = $walletUserCase->findWallet($args['id']);
+        $walletUserCase = new UseCaseWallet();
+        $wallet = $walletUserCase->findWallet($args['id']);
 
-            $response->getBody()
-                ->write(json_encode($wallet));
+        $response->getBody()
+            ->write(json_encode($wallet));
 
-            return $response->withStatus(201)
-                ->withHeader('Content-Type', 'application/json');
-        } catch (CustomException $err) {
-            $response->getBody()
-                ->write(json_encode($err->getErrorObject()));
-
-            return $response->withStatus($err->getCode())
-                ->withHeader('Content-Type', 'application/json');
-        }
+        return $response->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
     }
 
     public function createWallet(Request $request, Response $response): Response
@@ -38,25 +30,16 @@ class WalletController
         $walletValidator = ValidatorFactory::create(WalletType::USER);
         $data = json_decode($request->getBody()->getContents(), true);
 
-        try {
-            $walletValidator->validate($data);
-            $walletUserCase = new UseCaseWallet();
+        $walletValidator->validate($data);
+        $walletUserCase = new UseCaseWallet();
 
-            $wallet = $walletUserCase->createWallet($data, WalletType::USER);
+        $wallet = $walletUserCase->createWallet($data, WalletType::USER);
 
-            $response->getBody()
-                ->write(json_encode($wallet));
+        $response->getBody()
+            ->write(json_encode($wallet));
 
-            return $response->withStatus(201)
-                ->withHeader('Content-Type', 'application/json');
-
-        } catch (CustomException $err) {
-            $response->getBody()
-                ->write(json_encode($err->getErrorObject()));
-
-            return $response->withStatus($err->getCode())
-                ->withHeader('Content-Type', 'application/json');
-        }
+        return $response->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
     }
 
 
@@ -66,24 +49,15 @@ class WalletController
         $walletValidator = ValidatorFactory::create(WalletType::MERCHANT);
         $data = json_decode($request->getBody()->getContents(), true);
 
-        try {
-            $walletValidator->validate($data);
-            $walletUserCase = new UseCaseWallet();
+        $walletValidator->validate($data);
+        $walletUserCase = new UseCaseWallet();
 
-            $wallet = $walletUserCase->createWallet($data, WalletType::MERCHANT);
+        $wallet = $walletUserCase->createWallet($data, WalletType::MERCHANT);
 
-            $response->getBody()
-                ->write(json_encode($wallet));
+        $response->getBody()
+            ->write(json_encode($wallet));
 
-            return $response->withStatus(201)
-                ->withHeader('Content-Type', 'application/json');
-
-        } catch (CustomException $err) {
-            $response->getBody()
-                ->write(json_encode($err->getErrorObject()));
-
-            return $response->withStatus($err->getCode())
-                ->withHeader('Content-Type', 'application/json');
-        }
+        return $response->withStatus(201)
+            ->withHeader('Content-Type', 'application/json');
     }
 }
