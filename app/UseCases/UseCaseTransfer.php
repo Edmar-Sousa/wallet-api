@@ -84,8 +84,6 @@ class UseCaseTransfer
             if (!$client->isAuthorized()) {
                 throw new PicPayAuthorizationException(
                     'Transaction not authorized',
-                    'transaction_not_authorized',
-                    403,
                     [ 'authorization' => 'A transferência não foi autorizada, tente novamente' ]
                 );
             }
