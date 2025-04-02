@@ -63,6 +63,14 @@ class WalletRepository
     }
 
 
+    public function getWallet(int $id): Wallet|null
+    {
+        $wallet = Wallet::where('id', $id)
+            ->first();
+
+        return $wallet;
+    }
+
     public function getWalletForUpdate(int $id): Wallet|null
     {
         $wallet = Wallet::where('id', $id)
