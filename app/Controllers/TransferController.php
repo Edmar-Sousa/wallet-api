@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
@@ -7,11 +9,8 @@ use App\UseCases\UseCaseTransfer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-use RuntimeException;
-
 class TransferController
 {
-
     public function createTransfer(Request $request, Response $response): Response
     {
         $data = json_decode($request->getBody()->getContents(), true);
@@ -27,10 +26,7 @@ class TransferController
 
             return $response->withStatus(201)
                 ->withHeader('Content-Type', 'application/json');
-        }
-
-        catch (CustomException $err)
-        {
+        } catch (CustomException $err) {
             $response->getBody()
                 ->write(json_encode($err->getErrorObject()));
 

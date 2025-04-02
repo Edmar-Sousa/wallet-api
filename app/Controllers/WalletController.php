@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controllers;
 
 use App\Enums\WalletType;
-use App\Models\Wallet;
 use App\Repositories\Wallet\WalletRepository;
 use App\Validators\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -11,7 +12,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class WalletController
 {
-
     public function createWallet(Request $request, Response $response): Response
     {
         $walletValidator = ValidatorFactory::create(WalletType::USER);
