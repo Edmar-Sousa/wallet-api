@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Clients\ClientAuthorization;
 use App\Enums\WalletType;
+use App\Exceptions\WalletBalanceInsufficientException;
 use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
 use App\Models\Transfer;
@@ -52,8 +53,14 @@ class UseCaseTransfer
             );
         }
 
-        if ($walletPayer->balance - $amount < 0)
-            throw new RuntimeException('Wallet not has balance to complete transfer');
+        if ($walletPayer->balance - $amount < 0) {
+            throw new WalletBalanceInsufficientException(
+                'Wallet not has balance to complete transfer',
+                'wallet_balance_insufficient',
+                403,
+                [ 'payer_wallet' => 'Saldo insuficiente para completar transferencia' ]
+            );
+        }
     }
 
 
