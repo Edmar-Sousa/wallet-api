@@ -1,16 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Clients;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Slim\Exception\HttpForbiddenException;
-
 use RuntimeException;
 
 class ClientAuthorization
 {
-
     protected Client $client;
 
     public function __construct()
@@ -28,19 +27,19 @@ class ClientAuthorization
 
             $responseBody = json_decode($response->getBody()->getContents(), true);
 
-            if (!isset($responseBody['status'], $responseBody['data']['authorization']))
+            if (!isset($responseBody['status'], $responseBody['data']['authorization'])) {
                 throw new RuntimeException('Unexpected error');
+            }
 
             return $responseBody;
-        }
+        } catch (ClientException $err) {
 
-        catch (ClientException $err) {
-
-            if ($err->getResponse() && $err->getResponse()->getStatusCode() == 403)
+            if ($err->getResponse() && $err->getResponse()->getStatusCode() == 403) {
                 return [
                     'status' => 'fail',
                     'data' => ['authorization' => false]
                 ];
+            }
 
             throw new RuntimeException('Client error');
         }
@@ -49,6 +48,6 @@ class ClientAuthorization
     public function isAuthorized(): bool
     {
         $response = $this->fetchAuthorizationStatus();
-        return $response['status'] === 'success' && $response['data']['authorization'] == true;
+        return $response['status'] === 'success' && $response['data']['authorization'] === true;
     }
 }
