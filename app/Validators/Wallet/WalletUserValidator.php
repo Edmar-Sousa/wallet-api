@@ -4,35 +4,13 @@ declare(strict_types=1);
 
 namespace App\Validators\Wallet;
 
+use App\Exceptions\ValidationException;
 use App\Interfaces\ValidatorInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
 
 class WalletUserValidator implements ValidatorInterface
 {
-    protected bool $isValid = false;
-
-    protected array $errorsMessage;
-
-
-    public function isValid(): bool
-    {
-        return $this->isValid;
-    }
-
-    public function getErrorsMessage(): array
-    {
-        return $this->errorsMessage;
-    }
-
-    public function getErrorObject(): array
-    {
-        return [
-            'status' => 400,
-            'code' => 'validation_wallet_error',
-            'errors' => $this->getErrorsMessage(),
-        ];
-    }
 
     public function validate(array $data): void
     {
@@ -43,16 +21,21 @@ class WalletUserValidator implements ValidatorInterface
                 ->key('cpfCnpj', v::cpf()->notEmpty());
 
             $validator->assert($data);
-            $this->isValid = true;
+
         } catch (NestedValidationException $err) {
-            $this->errorsMessage = $err->getMessages([
+            $messages = $err->getMessages([
                 'string' => '{{name}} deve ser uma texto',
                 'empty' => '{{name}} não pode ser vazio',
                 'email' => '{{name}} deve ser um email valido',
                 'cpf' => '{{name}} deve ser um CPF valido',
             ]);
 
-            $this->isValid = false;
+            throw new ValidationException(
+                'Data to create user wallet is invalid',
+                'validation_wallet_error',
+                400,
+                $messages
+            );
         }
 
     }
