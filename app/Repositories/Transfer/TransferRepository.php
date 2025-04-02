@@ -8,6 +8,13 @@ use App\Models\Transfer;
 class TransferRepository
 {
 
+    public function deleteTransferWithId(int $transferId)
+    {
+        Transfer::where('id', $transferId)
+            ->delete();
+    }
+
+
     public function getTransferWithId(int $transferId)
     {
         $transfer = Transfer::where('id', $transferId)
