@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Clients\ClientAuthorization;
 use App\Enums\WalletType;
+use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
 use App\Models\Transfer;
 use App\Models\Wallet;
@@ -42,8 +43,14 @@ class UseCaseTransfer
 
     private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
     {
-        if ($walletPayer->type == WalletType::MERCHANT)
-            throw new RuntimeException('Merchant user not allowed to transfer');
+        if ($walletPayer->type == WalletType::MERCHANT)  {
+            throw new WalletMerchantException(
+                'Merchant user not allowed to transfer',
+                'wallet_not_allowed_transfer',
+                403,
+                [ 'payer_wallet' => 'Lojistas não podem fazer transferencias' ]
+            );
+        }
 
         if ($walletPayer->balance - $amount < 0)
             throw new RuntimeException('Wallet not has balance to complete transfer');
