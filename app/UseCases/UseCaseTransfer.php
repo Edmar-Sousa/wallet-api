@@ -71,8 +71,8 @@ class UseCaseTransfer
         $walletRepository = new WalletRepository();
         $amountTransfer = $transferData['value'] * 100;
 
-        $walletPayer = $walletRepository->getWallet($transferData['payer']);
-        $walletPayee = $walletRepository->getWallet($transferData['payee']);
+        $walletPayer = $walletRepository->getWalletForUpdate($transferData['payer']);
+        $walletPayee = $walletRepository->getWalletForUpdate($transferData['payee']);
 
 
         $this->checksWalletsExists($walletPayer, $walletPayee);

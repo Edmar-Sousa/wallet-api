@@ -63,7 +63,7 @@ class WalletRepository
     }
 
 
-    public function getWallet(int $id): Wallet|null
+    public function getWalletForUpdate(int $id): Wallet|null
     {
         $wallet = Wallet::where('id', $id)
             ->lockForUpdate()
