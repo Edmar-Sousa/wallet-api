@@ -11,6 +11,22 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class TransferController
 {
+
+    public function cancellTransfer(Request $request, Response $response, array $args)
+    {
+        $transferId = $args['id'];
+
+        $tranferUseCase = new UseCaseTransfer();
+        $transfer = $tranferUseCase->cancelTransfer($transferId);
+
+        $response->getBody()
+            ->write(json_encode($transfer));
+
+        return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json');
+    }
+
+
     public function createTransfer(Request $request, Response $response): Response
     {
         $data = json_decode($request->getBody()->getContents(), true);
