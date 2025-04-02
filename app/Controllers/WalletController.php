@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Enums\WalletType;
+use App\Exceptions\CustomException;
 use App\Repositories\Wallet\WalletRepository;
 use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -26,14 +27,22 @@ class WalletController
             return $response->withStatus(400);
         }
 
-        $walletRepository = new WalletRepository();
-        $wallet = $walletRepository->createUserWallet($data);
+        try {
+            $walletRepository = new WalletRepository();
+            $wallet = $walletRepository->createUserWallet($data);
+    
+            $response->getBody()
+                ->write(json_encode($wallet));
+    
+            return $response->withStatus(201)
+                ->withHeader('Content-Type', 'application/json');
+        } catch (CustomException $err) {
+            $response->getBody()
+                ->write(json_encode($err->getErrorObject()));
 
-        $response->getBody()
-            ->write(json_encode($wallet));
-
-        return $response->withStatus(201)
-            ->withHeader('Content-Type', 'application/json');
+            return $response->withStatus($err->getCode())
+                ->withHeader('Content-Type', 'application/json');
+        }
     }
 
 
@@ -52,13 +61,21 @@ class WalletController
             return $response->withStatus(400);
         }
 
-        $walletRepository = new WalletRepository();
-        $wallet = $walletRepository->createMerchantWallet($data);
+        try {
+            $walletRepository = new WalletRepository();
+            $wallet = $walletRepository->createMerchantWallet($data);
+    
+            $response->getBody()
+                ->write(json_encode($wallet));
+    
+            return $response->withStatus(201)
+                ->withHeader('Content-Type', 'application/json');
+        } catch (CustomException $err) {
+            $response->getBody()
+                ->write(json_encode($err->getErrorObject()));
 
-        $response->getBody()
-            ->write(json_encode($wallet));
-
-        return $response->withStatus(201)
-            ->withHeader('Content-Type', 'application/json');
+            return $response->withStatus($err->getCode())
+                ->withHeader('Content-Type', 'application/json');
+        }
     }
 }
