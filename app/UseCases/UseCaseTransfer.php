@@ -4,6 +4,7 @@ namespace App\UseCases;
 
 use App\Clients\ClientAuthorization;
 use App\Enums\WalletType;
+use App\Exceptions\WalletNotFoundException;
 use App\Models\Transfer;
 use App\Models\Wallet;
 use App\Repositories\Transfer\TransferRepository;
@@ -19,11 +20,24 @@ class UseCaseTransfer
 
     private function checksWalletsExists(Wallet|null $payer, Wallet|null $payee): void
     {
-        if (is_null($payer))
-            throw new RuntimeException('Wallet payer not found');
+        if (is_null($payer)) {
+            throw new WalletNotFoundException(
+                'Wallet payer not found',
+                'wallet_not_found',
+                404,
+                ['payer_wallet' => 'Carteira do usuario pagador não encontrada']
+            );
+        }
 
-        if (is_null($payee))
-            throw new RuntimeException('Wallet payee not found');
+
+        if (is_null($payee)) {
+            throw new WalletNotFoundException(
+                'Wallet payee not found',
+                'wallet_not_found',
+                404,
+                ['payee_wallet' => 'Carteira do usuario beneficiario não encontrada']
+            );
+        }
     }
 
     private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
