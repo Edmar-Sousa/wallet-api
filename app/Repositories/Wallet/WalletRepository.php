@@ -7,12 +7,10 @@ namespace App\Repositories\Wallet;
 use App\Enums\WalletType;
 use App\Exceptions\CreateWalletException;
 use App\Models\Wallet;
-
 use Exception;
 
 class WalletRepository
 {
-
     private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj)
     {
         $wallet = Wallet::where('email', $email)
@@ -33,7 +31,7 @@ class WalletRepository
             // balance to tests
             'balance'  => $balance,
             'type'     => $type,
-        ]);        
+        ]);
     }
 
     public function createUserWallet(array $data): Wallet
