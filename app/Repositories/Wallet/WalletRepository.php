@@ -38,8 +38,6 @@ class WalletRepository
         if ($this->hasWalletWithEmailOrCpfCnpj($data['email'], $data['cpfCnpj'])) {
             throw new CreateWalletException(
                 'Error to create user wallet',
-                'error_create_wallet',
-                400,
                 [ 'message' => 'Ja existe uma carteira com o email ou cpf informado' ]
             );
         }
@@ -52,8 +50,6 @@ class WalletRepository
         if ($this->hasWalletWithEmailOrCpfCnpj($data['email'], $data['cpfCnpj'])) {
             throw new CreateWalletException(
                 'Error to create merchant wallet',
-                'error_create_wallet',
-                400,
                 [ 'message' => 'Ja existe uma carteira com o email ou cnpj informado' ]
             );
         }
