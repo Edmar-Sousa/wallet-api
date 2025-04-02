@@ -41,4 +41,21 @@ class WalletRepository
 
         return $wallet;
     }
+
+
+    public function debtWallet(Wallet $wallet, int $value): void
+    {
+        Wallet::where('id', $wallet->id)
+            ->update([
+                'balance' => $wallet->balance - $value
+            ]);
+    }
+
+    public function creditWallet(Wallet $wallet, int $value): void
+    {
+        Wallet::where('id', $wallet->id)
+            ->update([
+                'balance' => $wallet->balance + $value
+            ]);
+    }
 }
