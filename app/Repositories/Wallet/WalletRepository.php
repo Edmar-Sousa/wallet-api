@@ -19,7 +19,7 @@ class WalletRepository
             ->orWhere('cpfCnpj', $cpfCnpj)
             ->first();
 
-        return $wallet === null;
+        return $wallet !== null;
     }
 
     private function createWallet(array $data, WalletType $type, int $balance = 0): Wallet
