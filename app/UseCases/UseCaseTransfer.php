@@ -47,8 +47,6 @@ class UseCaseTransfer
         if ($walletPayer->type == WalletType::MERCHANT) {
             throw new WalletMerchantException(
                 'Merchant user not allowed to transfer',
-                'wallet_not_allowed_transfer',
-                403,
                 [ 'payer_wallet' => 'Lojistas não podem fazer transferencias' ]
             );
         }
