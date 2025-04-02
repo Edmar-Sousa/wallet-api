@@ -19,8 +19,6 @@ class UseCaseWallet
         if ($wallet === null) {
             throw new WalletNotFoundException(
                 'Error to find wallet with id ' . $walletId,
-                'wallet_not_found',
-                404,
                 ['wallet' => 'Carteira com id informado não foi encontrada']
             );
         }

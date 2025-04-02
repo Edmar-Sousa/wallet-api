@@ -25,8 +25,6 @@ class UseCaseTransfer
         if (is_null($payer)) {
             throw new WalletNotFoundException(
                 'Wallet payer not found',
-                'wallet_not_found',
-                404,
                 ['payer_wallet' => 'Carteira do usuario pagador não encontrada']
             );
         }
@@ -35,8 +33,6 @@ class UseCaseTransfer
         if (is_null($payee)) {
             throw new WalletNotFoundException(
                 'Wallet payee not found',
-                'wallet_not_found',
-                404,
                 ['payee_wallet' => 'Carteira do usuario beneficiario não encontrada']
             );
         }
