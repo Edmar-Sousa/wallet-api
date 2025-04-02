@@ -61,7 +61,7 @@ class UseCaseTransfer
         Capsule::beginTransaction();
 
         $walletRepository = new WalletRepository();
-        $amountTransfer = $transferData['value'] * 100;
+        $amountTransfer = intval(floatval($transferData['value']) * 100);
 
         $walletPayer = $walletRepository->getWalletForUpdate($transferData['payer']);
         $walletPayee = $walletRepository->getWalletForUpdate($transferData['payee']);

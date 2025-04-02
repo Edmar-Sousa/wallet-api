@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\UseCases;
 
 use App\Enums\WalletType;
-use App\Exceptions\WalletNotFoundException;
 use App\Models\Wallet;
+use App\Exceptions\WalletNotFoundException;
 use App\Repositories\Wallet\WalletRepository;
 
 class UseCaseWallet
@@ -22,6 +22,8 @@ class UseCaseWallet
                 ['wallet' => 'Carteira com id informado não foi encontrada']
             );
         }
+
+        $wallet->balance = floatval(intval($wallet->balance) / 100);
 
         return $wallet;
     }
