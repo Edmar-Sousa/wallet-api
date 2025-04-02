@@ -38,8 +38,6 @@ class WalletUserValidator implements ValidatorInterface
 
             throw new ValidationException(
                 'Data to create user wallet is invalid',
-                'validation_wallet_error',
-                400,
                 $messages
             );
         }
