@@ -14,6 +14,8 @@ trait BootApp
 
         $app = AppFactory::create();
 
+        require __DIR__ . '/../../app/Routes/api.php';
+
         $app->add(ErrorHandlingMiddleware::class);
 
         return $app;
