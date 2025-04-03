@@ -14,13 +14,15 @@ class TransferController
 
     public function cancellTransfer(Request $request, Response $response, array $args)
     {
-        $transferId = $args['id'];
+        $transferId = intval($args['id']);
 
         $tranferUseCase = new UseCaseTransfer();
-        $transfer = $tranferUseCase->cancelTransfer($transferId);
+        $tranferUseCase->cancelTransfer($transferId);
 
         $response->getBody()
-            ->write(json_encode($transfer));
+            ->write(json_encode([
+                'message' => 'Transferencia cancelada com sucesso'
+            ]));
 
         return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json');
