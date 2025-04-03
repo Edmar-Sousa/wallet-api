@@ -105,8 +105,8 @@ class UseCaseTransfer
         $walletRepository = new WalletRepository();
         $amountTransfer = intval(floatval($transferData['value']) * 100);
 
-        $walletPayer = $walletRepository->getWalletForUpdate($transferData['payer']);
-        $walletPayee = $walletRepository->getWalletForUpdate($transferData['payee']);
+        $walletPayer = $walletRepository->getWalletForUpdate(intval($transferData['payer']));
+        $walletPayee = $walletRepository->getWalletForUpdate(intval($transferData['payee']));
 
 
         $this->checkWalletAllowedToTransfer($walletPayer);
