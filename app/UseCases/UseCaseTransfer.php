@@ -53,7 +53,7 @@ class UseCaseTransfer
         $walletPayee = $transfer->walletPayer;
 
         $this->checksWalletsExists($walletPayer, $walletPayee);
-        $this->checkWalletAllowedToTransfer($walletPayer, $amountTransfer);
+        $this->checkWalletHasBalanceToTransfer($walletPayer, $amountTransfer);
 
         try {
             Capsule::beginTransaction();
@@ -90,7 +90,7 @@ class UseCaseTransfer
         }
     }
 
-    private function checkWalletAllowedToTransfer(Wallet $walletPayer, int $amount): void
+    private function checkWalletAllowedToTransfer(Wallet $walletPayer)
     {
         if ($walletPayer->type == WalletType::MERCHANT) {
             throw new WalletMerchantException(
@@ -98,7 +98,10 @@ class UseCaseTransfer
                 [ 'payer_wallet' => 'Lojistas não podem fazer transferencias' ]
             );
         }
+    }
 
+    private function checkWalletHasBalanceToTransfer(Wallet $walletPayer, int $amount): void
+    {
         if ($walletPayer->balance - $amount < 0) {
             throw new WalletBalanceInsufficientException(
                 'Wallet not has balance to complete transfer',
@@ -117,8 +120,9 @@ class UseCaseTransfer
         $walletPayee = $walletRepository->getWalletForUpdate($transferData['payee']);
 
 
+        $this->checkWalletAllowedToTransfer($walletPayer);
         $this->checksWalletsExists($walletPayer, $walletPayee);
-        $this->checkWalletAllowedToTransfer($walletPayer, $amountTransfer);
+        $this->checkWalletHasBalanceToTransfer($walletPayer, $amountTransfer);
 
         try {
             Capsule::beginTransaction();
