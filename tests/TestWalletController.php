@@ -2,24 +2,16 @@
 
 namespace Tests;
 
-use App\Controllers\WalletController;
-
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\StreamInterface;
 use Slim\App;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Faker\Factory as Faker;
-
-use Slim\Psr7\Factory\StreamFactory;
-use Slim\Psr7\Stream;
 use Tests\Fixtures\UserFixtures;
 use Tests\Traits\BootApp;
-use Tests\Traits\hasFaker;
 
 
 class TestWalletController extends TestCase
 {
-    use BootApp, hasFaker;
+    use BootApp;
 
     private App $app;
 
@@ -28,11 +20,7 @@ class TestWalletController extends TestCase
     {
         parent::setUp();
 
-        $this->faker = $this->setUpFaker();
         $this->app = $this->setUpApp();
-
-        $this->app->post('/wallet/user', [WalletController::class, 'createWallet']);
-        $this->app->post('/wallet/merchant', [WalletController::class, 'createMerchantWallet']);
     }
 
     public function testCreateWalletMerchantInvalidData()
