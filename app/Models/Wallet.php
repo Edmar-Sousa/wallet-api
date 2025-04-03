@@ -22,5 +22,9 @@ class Wallet extends Model
         'type',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
 
 }
