@@ -39,7 +39,7 @@ class UseCaseTransfer
     }
 
 
-    public function cancelTransfer(int $transferId): Transfer
+    public function cancelTransfer(int $transferId): void
     {
         $walletRepository = new WalletRepository();
         $transferRepository = new TransferRepository();
@@ -47,7 +47,7 @@ class UseCaseTransfer
 
         $transfer = $transferRepository->getTransferWithId($transferId);
 
-        $amountTransfer = intval(floatval($transfer->value) * 100);
+        $amountTransfer = $transfer->value;
 
         $walletPayer = $transfer->walletPayee;
         $walletPayee = $transfer->walletPayer;
@@ -66,12 +66,6 @@ class UseCaseTransfer
                     [ 'authorization' => 'A transferência não foi autorizada, tente novamente' ]
                 );
             }
-    
-            $transfer = $transferRepository->createTransfer([
-                'payer' => $walletPayer,
-                'payee' => $walletPayee,
-                'value' => $amountTransfer,
-            ]);
 
             $walletRepository->debtWallet($walletPayer, $amountTransfer);
             $walletRepository->creditWallet($walletPayee, $amountTransfer);
@@ -79,14 +73,10 @@ class UseCaseTransfer
             $transferRepository->deleteTransferWithId($transferId);
             Capsule::commit();
 
-            return $transfer;
         } catch (RuntimeException $e) {
             Capsule::rollBack();
 
-            throw new TransferException(
-                'Error when making transfer',
-                [ 'transfer' => 'Erro ao realizar transferência' ]
-            );
+            throw $e;
         }
     }
 
@@ -151,10 +141,7 @@ class UseCaseTransfer
         } catch (RuntimeException $e) {
             Capsule::rollBack();
 
-            throw new TransferException(
-                'Error when making transfer',
-                [ 'transfer' => 'Erro ao realizar transferência' ]
-            );
+            throw $e;
         }
 
     }
