@@ -46,8 +46,7 @@ class UseCaseTransfer
 
 
         $transfer = $transferRepository->getTransferWithId($transferId);
-
-        $amountTransfer = $transfer->value;
+        $amountTransfer = intval($transfer->value);
 
         $walletPayer = $transfer->walletPayee;
         $walletPayee = $transfer->walletPayer;
