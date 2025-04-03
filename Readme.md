@@ -19,7 +19,7 @@
 
 ### Como executar
 ```bash
-$ git clone && cd 
+$ git clone https://github.com/Edmar-Sousa/wallet-api.git && cd wallet-api
 $ docker-compose up
 ```
 
