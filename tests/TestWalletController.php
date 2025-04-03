@@ -12,6 +12,7 @@ use Faker\Factory as Faker;
 
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Stream;
+use Tests\Fixtures\UserFixtures;
 use Tests\Traits\BootApp;
 use Tests\Traits\hasFaker;
 
@@ -41,19 +42,9 @@ class TestWalletController extends TestCase
             '/wallet/user'
         );
 
-        $stream = new StreamFactory();
-
-        $requestBody = $stream->createStream(json_encode([
-            'fullname' => '',
-            'cpfCnpj' => '92.444.627/0011-30',
-            'email' => 'teste',
-            'password' => '123456',
-        ]));
-
-
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($requestBody);
+            ->withBody(UserFixtures::createInvalidUser());
 
         $response = $this->app->handle($request);
 
@@ -78,19 +69,9 @@ class TestWalletController extends TestCase
             '/wallet/user'
         );
 
-        $stream = new StreamFactory();
-
-        $requestBody = $stream->createStream(json_encode([
-            'fullname' => '',
-            'cpfCnpj' => '143.222.567-81',
-            'email' => 'teste',
-            'password' => '123456',
-        ]));
-
-
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($requestBody);
+            ->withBody(UserFixtures::createInvalidUser());
 
         $response = $this->app->handle($request);
 
@@ -108,21 +89,6 @@ class TestWalletController extends TestCase
     }
 
 
-    private function createUser($isMerchant = false): StreamInterface
-    {
-        $stream = new StreamFactory();
-
-        $cpfCnpj = $isMerchant ? $this->faker->cnpj() : $this->faker->cpf();
-
-        return $stream->createStream(json_encode([
-            'fullname' => $this->faker->name(),
-            'cpfCnpj' => $cpfCnpj,
-            'email' => $this->faker->email(),
-            'password' => '123456',
-        ]));
-
-    }
-
     public function testCreateUserWallet(): void
     {
         $request = (new ServerRequestFactory())->createServerRequest(
@@ -133,7 +99,7 @@ class TestWalletController extends TestCase
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($this->createUser());
+            ->withBody(UserFixtures::createValidUser());
 
         $response = $this->app->handle($request);
 
@@ -151,7 +117,7 @@ class TestWalletController extends TestCase
 
         $request = $request
             ->withHeader('Content-Type', 'application/json')
-            ->withBody($this->createUser(true));
+            ->withBody(UserFixtures::createValidUser(true));
 
         $response = $this->app->handle($request);
 
