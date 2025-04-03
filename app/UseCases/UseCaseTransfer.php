@@ -136,6 +136,8 @@ class UseCaseTransfer
             $walletRepository->debtWallet($walletPayer, $amountTransfer);
             $walletRepository->creditWallet($walletPayee, $amountTransfer);
 
+            $transfer->value = floatval($transfer->value / 100);
+
             Capsule::commit();
             return $transfer;
         } catch (RuntimeException $e) {
