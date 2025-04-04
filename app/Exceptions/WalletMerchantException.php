@@ -13,7 +13,7 @@ class WalletMerchantException extends CustomException
         parent::__construct(
             $log,
             'wallet_not_allowed_transfer',
-            403,
+            422,
             $messages
         );
     }

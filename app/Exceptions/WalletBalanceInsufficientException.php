@@ -13,7 +13,7 @@ class WalletBalanceInsufficientException extends CustomException
         parent::__construct(
             $log,
             'wallet_balance_insufficient',
-            403,
+            422,
             $messages
         );
     }
