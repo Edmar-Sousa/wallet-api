@@ -19,7 +19,7 @@ class WalletRepository
         return $wallet !== null;
     }
 
-    private function createWallet(array $data, WalletType $type, int $balance = 0): Wallet
+    private function createWallet(array $data, WalletType $type): Wallet
     {
         return Wallet::create([
             'fullname' => $data['fullname'],
@@ -27,8 +27,6 @@ class WalletRepository
             'email'    => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 13]),
 
-            // balance to tests
-            'balance'  => $balance,
             'type'     => $type,
         ]);
     }
@@ -42,7 +40,7 @@ class WalletRepository
             );
         }
 
-        return $this->createWallet($data, WalletType::USER, 1000000);
+        return $this->createWallet($data, WalletType::USER);
     }
 
     public function createMerchantWallet(array $data): Wallet
