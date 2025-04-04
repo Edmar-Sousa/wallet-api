@@ -12,12 +12,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 class TransferController
 {
 
-    public function cancellTransfer(Request $request, Response $response, array $args)
+    public function cancelTransfer(Request $request, Response $response, array $args)
     {
         $transferId = intval($args['id']);
 
-        $tranferUseCase = new UseCaseTransfer();
-        $tranferUseCase->cancelTransfer($transferId);
+        $transferUseCase = new UseCaseTransfer();
+        $transferUseCase->cancelTransfer($transferId);
 
         $response->getBody()
             ->write(json_encode([
