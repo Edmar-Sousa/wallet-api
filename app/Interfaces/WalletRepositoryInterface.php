@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Wallet;
+namespace App\Interfaces;
 
 use App\Models\Wallet;
 
