@@ -2,12 +2,9 @@
 
 namespace Tests;
 
-use App\Controllers\TransferController;
-use App\Controllers\WalletController;
 use PHPUnit\Framework\TestCase;
 use Slim\App;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Slim\Psr7\Factory\StreamFactory;
 use Tests\Fixtures\TransferFixtures;
 use Tests\Fixtures\UserFixtures;
 use Tests\Traits\BootApp;
@@ -38,6 +35,28 @@ class TestTransferController extends TestCase
         $request = $request->withBody(UserFixtures::createValidUser($isMerchant));
 
         return $this->app->handle($request);
+    }
+
+    public function testTryTransferInsufficientBalance()
+    {
+        $userPayer = json_decode($this->createUserWallet()->getBody());
+        $userPayee = json_decode($this->createUserWallet()->getBody());
+
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/transfer'
+        );
+
+        $request = $request->withHeader('Content-Type', 'application/json')
+            ->withBody(TransferFixtures::createValidTransfer(
+                $userPayer->id,
+                $userPayee->id,
+                10.50
+            ));
+
+        $response = $this->app->handle($request);
+
+        $this->assertEquals(422, $response->getStatusCode());
     }
 
     public function testTransferBetweenUserAndMerchant()
