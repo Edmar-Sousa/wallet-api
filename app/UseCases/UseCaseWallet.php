@@ -8,13 +8,23 @@ use App\Enums\WalletType;
 use App\Models\Wallet;
 use App\Exceptions\WalletNotFoundException;
 use App\Repositories\Wallet\WalletRepository;
+use App\Repositories\Wallet\WalletRepositoryInterface;
 
 class UseCaseWallet
 {
+
+    private WalletRepositoryInterface $walletRepository;
+
+
+    public function __construct(WalletRepositoryInterface $walletRepository)
+    {
+        $this->walletRepository = $walletRepository;
+    }
+
+
     public function findWallet(string $walletId)
     {
-        $walletRepository = new WalletRepository();
-        $wallet = $walletRepository->getWallet((int) $walletId);
+        $wallet = $this->walletRepository->getWallet((int) $walletId);
 
         if ($wallet === null) {
             throw new WalletNotFoundException(
@@ -30,12 +40,10 @@ class UseCaseWallet
 
     public function createWallet(array $data, WalletType $type): Wallet
     {
-        $walletRepository = new WalletRepository();
-
         if ($type == WalletType::MERCHANT) {
-            $wallet = $walletRepository->createMerchantWallet($data);
+            $wallet = $this->walletRepository->createMerchantWallet($data);
         } else {
-            $wallet = $walletRepository->createUserWallet($data);
+            $wallet = $this->walletRepository->createUserWallet($data);
         }
 
         return $wallet;
