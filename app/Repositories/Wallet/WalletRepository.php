@@ -6,6 +6,7 @@ namespace App\Repositories\Wallet;
 
 use App\Enums\WalletType;
 use App\Exceptions\CreateWalletException;
+use App\Interfaces\WalletRepositoryInterface;
 use App\Models\Wallet;
 
 class WalletRepository implements WalletRepositoryInterface
