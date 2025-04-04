@@ -23,6 +23,28 @@ class TestTransferController extends TestCase
         $this->app = $this->setUpApp();
     }
 
+    public function testCancelTransferWithoutBalance()
+    {
+        $balanceInCents = 10.50 * 100; // R$ 10.50 in cents
+
+        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance();
+        $userPayee = WalletFactory::createWalletInDatabaseWithoutBalance();
+
+        $transfer = TransferFactory::createTransfer(
+            $userPayer->id,
+            $userPayee->id,
+            $balanceInCents
+        );
+
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'DELETE',
+            "/transfers/{$transfer->id}/cancellation"
+        );
+
+        $response = $this->app->handle($request);
+        $this->assertEquals(422, $response->getStatusCode());
+    }
+
     public function testCancelTransfer()
     {
         $balanceInCents = 10.50 * 100; // R$ 10.50 in cents
