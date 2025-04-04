@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Enums\WalletType;
-use App\Exceptions\CustomException;
 use App\UseCases\UseCaseWallet;
 use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
