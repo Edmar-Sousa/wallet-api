@@ -2,11 +2,12 @@
 
 namespace Tests;
 
+use App\Enums\WalletType;
 use PHPUnit\Framework\TestCase;
 use Slim\App;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Fixtures\TransferFixtures;
-use Tests\Fixtures\UserFixtures;
+use Tests\TestsFactory\WalletFactory;
 use Tests\Traits\BootApp;
 
 class TestTransferController extends TestCase
@@ -21,26 +22,10 @@ class TestTransferController extends TestCase
         $this->app = $this->setUpApp();
     }
 
-
-    private function createUserWallet(bool $isMerchant = false)
-    {
-        $route = $isMerchant ? '/merchant' : '/user';
-
-        $request = (new ServerRequestFactory())->createServerRequest(
-            'POST',
-            '/wallet' . $route,
-        );
-
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $request->withBody(UserFixtures::createValidUser($isMerchant));
-
-        return $this->app->handle($request);
-    }
-
     public function testTryTransferInsufficientBalance()
     {
-        $userPayer = json_decode($this->createUserWallet()->getBody());
-        $userPayee = json_decode($this->createUserWallet()->getBody());
+        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance();
+        $userPayee = WalletFactory::createWalletInDatabaseWithoutBalance();
 
         $request = (new ServerRequestFactory())->createServerRequest(
             'POST',
@@ -61,8 +46,8 @@ class TestTransferController extends TestCase
 
     public function testTransferBetweenUserAndMerchant()
     {
-        $userPayer = json_decode($this->createUserWallet(true)->getBody());
-        $userPayee = json_decode($this->createUserWallet()->getBody());
+        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance(WalletType::MERCHANT);
+        $userPayee = WalletFactory::createWalletInDatabaseWithoutBalance();
 
         $request = (new ServerRequestFactory())->createServerRequest(
             'POST',
@@ -83,13 +68,8 @@ class TestTransferController extends TestCase
 
     public function testTransferBetweenUserAndUser()
     {
-
-        $userPayer = $this->createUserWallet();
-        $userPayer = json_decode($userPayer->getBody());
-
-        $userPayee = $this->createUserWallet();
-        $userPayee = json_decode($userPayee->getBody());
-
+        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance(WalletType::USER, 100 * 100); // R$ 100 in cent
+        $userPayee = WalletFactory::createWalletInDatabaseWithoutBalance();
 
         $request = (new ServerRequestFactory())->createServerRequest(
             'POST',
