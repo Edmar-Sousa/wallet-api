@@ -27,17 +27,39 @@ class TestTransferController extends TestCase
 
     private function createUserWallet(bool $isMerchant = false)
     {
+        $route = $isMerchant ? '/merchant' : '/user';
+
         $request = (new ServerRequestFactory())->createServerRequest(
             'POST',
-            '/wallet/user'
+            '/wallet' . $route,
         );
 
-        $stream = (new StreamFactory())->createStream(UserFixtures::createValidUser($isMerchant));
-
         $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $request->withBody($stream);
+        $request = $request->withBody(UserFixtures::createValidUser($isMerchant));
 
         return $this->app->handle($request);
+    }
+
+    public function testTransferBetweenUserAndMerchant()
+    {
+        $userPayer = json_decode($this->createUserWallet(true)->getBody());
+        $userPayee = json_decode($this->createUserWallet()->getBody());
+
+        $request = (new ServerRequestFactory())->createServerRequest(
+            'POST',
+            '/transfer'
+        );
+
+        $request = $request->withHeader('Content-Type', 'application/json')
+            ->withBody(TransferFixtures::createValidTransfer(
+                $userPayer->id,
+                $userPayee->id,
+                10.50
+            ));
+
+        $response = $this->app->handle($request);
+
+        $this->assertEquals(422, $response->getStatusCode());
     }
 
     public function testTransferBetweenUserAndUser()
