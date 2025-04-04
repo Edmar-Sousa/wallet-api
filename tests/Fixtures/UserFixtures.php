@@ -10,25 +10,30 @@ use Slim\Psr7\Factory\StreamFactory;
 class UserFixtures
 {
 
-    public static function createValidUser($isMerchant = false)
+    public static function createUser(bool $isMerchant = false)
     {
-        $stream = new StreamFactory();
         $faker = Faker::create('pt_BR');
 
         $cpfCnpj = $isMerchant ? $faker->cnpj() : $faker->cpf();
 
-        return $stream->createStream(json_encode([
+        return [
             'fullname' => $faker->name(),
             'cpfCnpj' => $cpfCnpj,
             'email' => $faker->email(),
             'password' => '123456',
-        ]));
+        ];
+    }
+
+
+    public static function createValidUser(bool $isMerchant = false)
+    {
+        $stream = new StreamFactory();
+        return $stream->createStream(json_encode(self::createUser($isMerchant)));
     }
 
     public static function createInvalidUser()
     {
         $stream = new StreamFactory();
-        $faker = Faker::create('pt_BR');
 
         return $stream->createStream(json_encode([
             'fullname' => '',
