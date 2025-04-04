@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\UseCases;
 
 use App\Enums\WalletType;
-use App\Models\Wallet;
 use App\Exceptions\WalletNotFoundException;
-use App\Repositories\Wallet\WalletRepository;
+use App\Models\Wallet;
 use App\Repositories\Wallet\WalletRepositoryInterface;
 
 class UseCaseWallet
