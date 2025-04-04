@@ -8,7 +8,7 @@ use App\Enums\WalletType;
 use App\Exceptions\CreateWalletException;
 use App\Models\Wallet;
 
-class WalletRepository
+class WalletRepository implements WalletRepositoryInterface
 {
     private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj)
     {
