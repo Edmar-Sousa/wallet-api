@@ -6,10 +6,11 @@ namespace App\UseCases;
 
 use App\Enums\WalletType;
 use App\Exceptions\WalletNotFoundException;
+use App\Interfaces\UseCaseWalletInterface;
+use App\Interfaces\WalletRepositoryInterface;
 use App\Models\Wallet;
-use App\Repositories\Wallet\WalletRepositoryInterface;
 
-class UseCaseWallet
+class UseCaseWallet implements UseCaseWalletInterface
 {
 
     private WalletRepositoryInterface $walletRepository;
