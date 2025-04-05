@@ -3,6 +3,7 @@
 namespace Tests\Traits;
 
 use App\Middlewares\ErrorHandlingMiddleware;
+use Dotenv\Dotenv;
 use Slim\App;
 use Slim\Factory\AppFactory;
 
@@ -10,6 +11,9 @@ trait BootApp
 {
     public function setUpApp(): App
     {
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+        $dotenv->load();
+
         require_once __DIR__ . '/../../config/database.php';
 
         $app = AppFactory::create();
