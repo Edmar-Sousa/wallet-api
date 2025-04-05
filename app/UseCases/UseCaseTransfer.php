@@ -12,6 +12,7 @@ use App\Exceptions\WalletBalanceInsufficientException;
 use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
 use App\Interfaces\TransferRepositoryInterface;
+use App\Interfaces\UseCaseTransferInterface;
 use App\Interfaces\WalletRepositoryInterface;
 use App\Models\Transfer;
 use App\Models\Wallet;
@@ -20,7 +21,7 @@ use App\Repositories\Wallet\WalletRepository;
 use RuntimeException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-class UseCaseTransfer
+class UseCaseTransfer implements UseCaseTransferInterface
 {
     private WalletRepositoryInterface $walletRepository;
     private TransferRepositoryInterface $transferRepository;
