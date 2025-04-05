@@ -57,9 +57,7 @@ class WalletController
         $data = json_decode($request->getBody()->getContents(), true);
 
         $walletValidator->validate($data);
-        $walletUserCase = new UseCaseWallet();
-
-        $wallet = $walletUserCase->createWallet($data, WalletType::MERCHANT);
+        $wallet = $this->useCaseWallet->createWallet($data, WalletType::MERCHANT);
 
         $response->getBody()
             ->write(json_encode($wallet));
