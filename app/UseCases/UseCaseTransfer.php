@@ -11,6 +11,8 @@ use App\Exceptions\TransferException;
 use App\Exceptions\WalletBalanceInsufficientException;
 use App\Exceptions\WalletMerchantException;
 use App\Exceptions\WalletNotFoundException;
+use App\Interfaces\TransferRepositoryInterface;
+use App\Interfaces\WalletRepositoryInterface;
 use App\Models\Transfer;
 use App\Models\Wallet;
 use App\Repositories\Transfer\TransferRepository;
@@ -20,6 +22,17 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 class UseCaseTransfer
 {
+    private WalletRepositoryInterface $walletRepository;
+    private TransferRepositoryInterface $transferRepository;
+
+
+    public function __construct(WalletRepositoryInterface $walletRepository, TransferRepositoryInterface $transferRepository)
+    {
+        $this->walletRepository = $walletRepository;
+        $this->transferRepository = $transferRepository;
+    }
+
+
     private function checksWalletsExists(Wallet|null $payer, Wallet|null $payee): void
     {
         if (is_null($payer)) {
@@ -41,11 +54,7 @@ class UseCaseTransfer
 
     public function cancelTransfer(int $transferId): void
     {
-        $walletRepository = new WalletRepository();
-        $transferRepository = new TransferRepository();
-
-
-        $transfer = $transferRepository->getTransferWithId($transferId);
+        $transfer = $this->transferRepository->getTransferWithId($transferId);
         $amountTransfer = intval($transfer->value);
 
         $walletPayer = $transfer->walletPayee;
@@ -66,10 +75,10 @@ class UseCaseTransfer
                 );
             }
 
-            $walletRepository->debtWallet($walletPayer, $amountTransfer);
-            $walletRepository->creditWallet($walletPayee, $amountTransfer);
+            $this->walletRepository->debtWallet($walletPayer, $amountTransfer);
+            $this->walletRepository->creditWallet($walletPayee, $amountTransfer);
 
-            $transferRepository->deleteTransferWithId($transferId);
+            $this->transferRepository->deleteTransferWithId($transferId);
             Capsule::commit();
 
         } catch (RuntimeException $e) {
@@ -102,11 +111,10 @@ class UseCaseTransfer
 
     public function transferBetweenWallets(array $transferData): Transfer
     {
-        $walletRepository = new WalletRepository();
         $amountTransfer = intval(floatval($transferData['value']) * 100);
 
-        $walletPayer = $walletRepository->getWalletForUpdate(intval($transferData['payer']));
-        $walletPayee = $walletRepository->getWalletForUpdate(intval($transferData['payee']));
+        $walletPayer = $this->walletRepository->getWalletForUpdate(intval($transferData['payer']));
+        $walletPayee = $this->walletRepository->getWalletForUpdate(intval($transferData['payee']));
 
 
         $this->checkWalletAllowedToTransfer($walletPayer);
@@ -125,15 +133,14 @@ class UseCaseTransfer
                 );
             }
 
-            $transferRepository = new TransferRepository();
-            $transfer = $transferRepository->createTransfer([
+            $transfer = $this->transferRepository->createTransfer([
                 'payer' => $walletPayer,
                 'payee' => $walletPayee,
                 'value' => $amountTransfer,
             ]);
 
-            $walletRepository->debtWallet($walletPayer, $amountTransfer);
-            $walletRepository->creditWallet($walletPayee, $amountTransfer);
+            $this->walletRepository->debtWallet($walletPayer, $amountTransfer);
+            $this->walletRepository->creditWallet($walletPayee, $amountTransfer);
 
             $transfer->value = floatval($transfer->value / 100);
 
