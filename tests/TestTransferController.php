@@ -113,7 +113,8 @@ class TestTransferController extends TestCase
 
     public function testTransferBetweenUserAndUser()
     {
-        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance(WalletType::USER, 100 * 100); // R$ 100 in cent
+        $balance = 10.50 * 100;
+        $userPayer = WalletFactory::createWalletInDatabaseWithoutBalance(balance: $balance);
         $userPayee = WalletFactory::createWalletInDatabaseWithoutBalance();
 
         $request = (new ServerRequestFactory())->createServerRequest(
