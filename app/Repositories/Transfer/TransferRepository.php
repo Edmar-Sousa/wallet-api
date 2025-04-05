@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories\Transfer;
 
 use App\Exceptions\TransferNotFoundException;
+use App\Interfaces\TransferRepositoryInterface;
 use App\Models\Transfer;
 
-class TransferRepository
+class TransferRepository implements TransferRepositoryInterface
 {
 
     public function deleteTransferWithId(int $transferId)
