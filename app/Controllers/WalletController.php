@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Enums\WalletType;
+use App\Interfaces\UseCaseWalletInterface;
+use App\Repositories\Wallet\WalletRepository;
 use App\UseCases\UseCaseWallet;
 use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -12,10 +14,18 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class WalletController
 {
+    private UseCaseWalletInterface $useCaseWallet;
+
+
+    public function __construct()
+    {
+        $this->useCaseWallet = new UseCaseWallet(new WalletRepository());
+    }
+
+
     public function findWallet(Request $request, Response $response, array $args): Response
     {
-        $walletUserCase = new UseCaseWallet();
-        $wallet = $walletUserCase->findWallet($args['id']);
+        $wallet = $this->useCaseWallet->findWallet($args['id']);
 
         $response->getBody()
             ->write(json_encode($wallet));
@@ -30,9 +40,7 @@ class WalletController
         $data = json_decode($request->getBody()->getContents(), true);
 
         $walletValidator->validate($data);
-        $walletUserCase = new UseCaseWallet();
-
-        $wallet = $walletUserCase->createWallet($data, WalletType::USER);
+        $wallet = $this->useCaseWallet->createWallet($data, WalletType::USER);
 
         $response->getBody()
             ->write(json_encode($wallet));
