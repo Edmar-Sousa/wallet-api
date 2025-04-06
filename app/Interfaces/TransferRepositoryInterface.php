@@ -34,7 +34,7 @@ interface TransferRepositoryInterface
      *    'value': int
      * } $data
      * 
-     * @return void
+     * @return Transfer
      */
     public function createTransfer(array $data): Transfer;
 
