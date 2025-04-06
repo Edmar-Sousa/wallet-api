@@ -28,4 +28,25 @@ class Transfer extends Model
         'value',
     ];
 
+
+    /**
+     * Return the wallet of payee relationship
+     * 
+     * @return HasOne<Wallet, $this>
+     */
+    public function walletPayee(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'id', 'payee');
+    }
+
+
+    /**
+     * Return the wallet of payer relationship
+     * 
+     * @return HasOne<Wallet, $this>
+     */
+    public function walletPayer(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'id', 'payer');
+    }
 }
