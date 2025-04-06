@@ -14,7 +14,7 @@ interface CacheInterface
      * 
      * @return void
      */
-    public function enqueueMessageToNotifier(string $channel, mixed $data): void;
+    public function enqueueMessageToNotifier(string $channel, array $data): void;
 
 
     /**
@@ -26,6 +26,6 @@ interface CacheInterface
      * 
      * @return void
      */
-    public function dequeueMessageToNotifier(string $channel): void;
+    public function dequeueMessageToNotifier(string $channel): array|null;
 
 }

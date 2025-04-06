@@ -6,18 +6,34 @@ namespace App\Cache;
 
 use App\Interfaces\CacheInterface;
 
+use Predis\Client;
 
 class CacheRedis implements CacheInterface
 {
+
+    private Client $redisClient;
+
+
+    public function __construct()
+    {
+        $this->redisClient = new Client([
+            'scheme'   => 'tcp',
+            'host'     => $_ENV['REDIS_HOST'],
+            'port'     => $_ENV['REDIS_PORT'],
+            'password' => $_ENV['REDIS_PASS'] ?? '',
+            'database' => 0,
+        ]);
+    }
+
     /**
      * This function will place an event in the notification to 
      * be executed
      * 
      * @return void
      */
-    public function enqueueMessageToNotifier(string $channel, mixed $data): void
+    public function enqueueMessageToNotifier(string $channel, array $data): void
     {
-        
+        $this->redisClient->rpush($channel, $data);
     }
 
 
@@ -30,8 +46,8 @@ class CacheRedis implements CacheInterface
      * 
      * @return void
      */
-    public function dequeueMessageToNotifier(string $channel): void
+    public function dequeueMessageToNotifier(string $channel): array|null
     {
-
+       return $this->redisClient->blpop($channel, 2000);
     }
 }
