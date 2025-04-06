@@ -37,7 +37,7 @@ class WalletController
      */
     public function findWallet(Request $request, Response $response, array $args): Response
     {
-        $wallet = $this->useCaseWallet->findWallet($args['id']);
+        $wallet = $this->useCaseWallet->findWallet(intval($args['id']));
         $json = json_encode($wallet);
 
         if ($json === false) {
