@@ -11,7 +11,16 @@ use App\Models\Wallet;
 
 class WalletRepository implements WalletRepositoryInterface
 {
-    private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj)
+    /**
+     * This method check if already exists an register with email
+     * or cpfCnpj
+     * 
+     * @param string $email
+     * @param string $cpfCnpj
+     * 
+     * @return bool
+     */
+    private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj): bool
     {
         $wallet = Wallet::where('email', $email)
             ->orWhere('cpfCnpj', $cpfCnpj)
@@ -32,6 +41,19 @@ class WalletRepository implements WalletRepositoryInterface
         ]);
     }
 
+    /**
+     * Method to store wallet user in database
+     * 
+     * @param array{
+     *  "fullname": string, 
+     *  "cpfCnpj": string, 
+     *  "email": string, 
+     *  "password": string 
+     * } $data
+     * 
+     * @throws CreateWalletException
+     * @return Wallet
+     */
     public function createUserWallet(array $data): Wallet
     {
         if ($this->hasWalletWithEmailOrCpfCnpj($data['email'], $data['cpfCnpj'])) {
@@ -44,6 +66,19 @@ class WalletRepository implements WalletRepositoryInterface
         return $this->createWallet($data, WalletType::USER);
     }
 
+    /**
+     * Method to store wallet merchant in database
+     * 
+     * @param array{
+     *  "fullname": string, 
+     *  "cpfCnpj": string, 
+     *  "email": string, 
+     *  "password": string 
+     * } $data
+     * 
+     * @throws CreateWalletException
+     * @return Wallet
+     */
     public function createMerchantWallet(array $data): Wallet
     {
         if ($this->hasWalletWithEmailOrCpfCnpj($data['email'], $data['cpfCnpj'])) {
@@ -53,10 +88,16 @@ class WalletRepository implements WalletRepositoryInterface
             );
         }
 
-        return $this->createWallet($data, WalletType::MERCHANT, 1000000);
+        return $this->createWallet($data, WalletType::MERCHANT);
     }
 
 
+    /**
+     * Method to get wallet with id from database
+     * 
+     * @param int $id
+     * @return Wallet|null
+     */
     public function getWallet(int $id): Wallet|null
     {
         $wallet = Wallet::where('id', $id)
@@ -69,6 +110,14 @@ class WalletRepository implements WalletRepositoryInterface
         return $wallet;
     }
 
+
+    /**
+     * Method to get wallet with id from database to update.
+     * This method lock the register to prevent race condition
+     * 
+     * @param int $id
+     * @return Wallet|null
+     */
     public function getWalletForUpdate(int $id): Wallet|null
     {
         $wallet = Wallet::where('id', $id)
