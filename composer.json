@@ -5,7 +5,7 @@
 
     "scripts": {
         "fix": "php-cs-fixer fix --rules=@PSR12",
-        "analyse": "phpstan analyse app -l 9"
+        "analyse": "phpstan analyse -c phpstan.neon"
     },
 
     "autoload": {
