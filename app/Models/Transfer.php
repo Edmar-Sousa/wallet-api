@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $payee
  * @property int $value
  * 
+ * @property-read Wallet $walletPayee
+ * @property-read Wallet $walletPayer
  */
 class Transfer extends Model
 {
