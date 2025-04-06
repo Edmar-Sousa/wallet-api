@@ -6,6 +6,12 @@ namespace App\Exceptions;
 
 class CreateWalletException extends CustomException
 {
+    /**
+     * Create an internal error exception
+     * 
+     * @param string $log
+     * @param array<string, string> $messages
+     */
     public function __construct(string $log, array $messages = [])
     {
         parent::__construct(
