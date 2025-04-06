@@ -7,6 +7,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Class Transfer
+ * 
+ * @property int $payer
+ * @property int $payee
+ * @property int $value
+ * 
+ */
 class Transfer extends Model
 {
     protected $table = 'transfer';
