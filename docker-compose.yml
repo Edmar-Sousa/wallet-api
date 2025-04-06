@@ -1,4 +1,20 @@
 services:
+  worker:
+    build: .
+    container_name: worker
+    restart: always
+
+    volumes:
+      - .:/var/www/html
+
+    depends_on:
+      - redis
+
+    command: ["php", "/var/www/html/app/Worker/NotifierWorker.php"]
+
+    networks:
+      - app_network
+
   api:
     build: .
     container_name: api
