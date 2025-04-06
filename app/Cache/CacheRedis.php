@@ -29,6 +29,9 @@ class CacheRedis implements CacheInterface
      * This function will place an event in the notification to 
      * be executed
      * 
+     * @param string $channel
+     * @param array<string, mixed> $data
+     * 
      * @return void
      */
     public function enqueueMessageToNotifier(string $channel, array $data): void
@@ -44,7 +47,9 @@ class CacheRedis implements CacheInterface
      * It will keep trying until it receives a 
      * successful response.
      * 
-     * @return void
+     * @param string $channel
+     * 
+     * @return array<string, mixed>|null
      */
     public function dequeueMessageToNotifier(string $channel): array|null
     {
