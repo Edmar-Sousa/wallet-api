@@ -23,11 +23,12 @@ class ErrorHandlingMiddleware
 
             return $response;
         } catch (CustomException $err) {
+
             $response = (new SlimResponse())->withStatus($err->getCode())
                 ->withAddedHeader('Content-Type', 'application/json');
 
             $response->getBody()
-                ->write(json_encode($err->getErrorObject()));
+                ->write((string) json_encode( $err->getErrorObject()));
 
             return $response;
         } catch (Exception $err) {
@@ -36,7 +37,7 @@ class ErrorHandlingMiddleware
                 ->withAddedHeader('Content-Type', 'application/json');
 
             $response->getBody()
-                ->write(json_encode([
+                ->write( (string) json_encode([
                     'status' => 500,
                     'code' => 'internal_error',
                     'errors' => [
