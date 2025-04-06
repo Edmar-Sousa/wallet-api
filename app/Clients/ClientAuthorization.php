@@ -20,18 +20,25 @@ class ClientAuthorization
         ]);
     }
 
+    /**
+     * Send a http request to check if transfer is authorized and return the result
+     * 
+     * @throws \RuntimeException
+     * @return array{'status': string, 'data': array{'authorization': bool} }
+     */
     private function fetchAuthorizationStatus(): array
     {
         try {
             $response = $this->client->get('/api/v2/authorize');
 
+
+            /** @var array{status: string, data: array{authorization: bool}} $responseBody */
             $responseBody = json_decode($response->getBody()->getContents(), true);
 
-            if (!isset($responseBody['status'], $responseBody['data']['authorization'])) {
-                throw new RuntimeException('Unexpected error');
-            }
-
-            return $responseBody;
+            return [
+                'status' => $responseBody['status'],
+                'data' => $responseBody['data']
+            ];
         } catch (ClientException $err) {
 
             if ($err->getResponse() && $err->getResponse()->getStatusCode() == 403) {
