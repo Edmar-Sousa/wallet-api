@@ -30,6 +30,19 @@ class WalletRepository implements WalletRepositoryInterface
         return $wallet !== null;
     }
 
+    /**
+     * Store wallet in table
+     * 
+     * @param array{
+     *  "fullname": string, 
+     *  "cpfCnpj": string, 
+     *  "email": string, 
+     *  "password": string 
+     * } $data
+     * @param \App\Enums\WalletType $type
+     * 
+     * @return Wallet
+     */
     private function createWallet(array $data, WalletType $type): Wallet
     {
         /** @phpstan-ignore-next-line */
