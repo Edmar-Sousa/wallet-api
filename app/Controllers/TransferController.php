@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Cache\CacheFactory;
+use App\Enums\CacheType;
 use App\Exceptions\InternalErrorException;
 use App\Interfaces\UseCaseTransferInterface;
 use App\Repositories\Transfer\TransferRepository;
@@ -80,8 +82,10 @@ class TransferController
 
         $transfer = $this->useCaseTransfer->transferBetweenWallets($data);
 
-        // TODO: send notification
-
+        $cacheClient = CacheFactory::create(CacheType::REDIS);
+        $cacheClient->enqueueMessageToNotifier('notifier_transfer', [ 'payee' => $transfer['payee'] ]);
+        
+        
         $json = json_encode($transfer);
 
         if ($json === false) {
