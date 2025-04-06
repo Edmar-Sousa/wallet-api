@@ -10,7 +10,7 @@ use App\Models\Wallet;
 interface UseCaseWalletInterface
 {
 
-    function findWallet(string $walletId);
-    function createWallet(array $data, WalletType $type): Wallet;
+    public function findWallet(int $walletId);
+    public function createWallet(array $data, WalletType $type): Wallet;
 
 }

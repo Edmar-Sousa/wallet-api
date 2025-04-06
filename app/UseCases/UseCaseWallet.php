@@ -22,7 +22,7 @@ class UseCaseWallet implements UseCaseWalletInterface
     }
 
 
-    public function findWallet(string $walletId)
+    public function findWallet(int $walletId)
     {
         $wallet = $this->walletRepository->getWallet((int) $walletId);
 
