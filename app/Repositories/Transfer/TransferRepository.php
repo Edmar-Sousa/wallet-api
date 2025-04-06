@@ -7,6 +7,7 @@ namespace App\Repositories\Transfer;
 use App\Exceptions\TransferNotFoundException;
 use App\Interfaces\TransferRepositoryInterface;
 use App\Models\Transfer;
+use App\Models\Wallet;
 
 class TransferRepository implements TransferRepositoryInterface
 {
@@ -64,6 +65,7 @@ class TransferRepository implements TransferRepositoryInterface
      */
     public function createTransfer(array $data): Transfer
     {
+        /** @var Wallet */
         $payer = $data['payer'];
         $payee = $data['payee'];
 
