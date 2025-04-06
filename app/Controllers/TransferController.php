@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Exceptions\CustomException;
+use App\Exceptions\InternalErrorException;
 use App\Interfaces\UseCaseTransferInterface;
 use App\Repositories\Transfer\TransferRepository;
 use App\Repositories\Wallet\WalletRepository;
@@ -25,16 +25,36 @@ class TransferController
         );
     }
 
-    public function cancelTransfer(Request $request, Response $response, array $args)
+    /**
+     * Method to cancel transfer between two wallets
+     * 
+     * @throws InternalErrorException
+     * 
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * 
+     * @param array{'id': string} $args
+     * @return Response
+     */
+    public function cancelTransfer(Request $request, Response $response, array $args): Response
     {
         $transferId = intval($args['id']);
 
         $this->useCaseTransfer->cancelTransfer($transferId);
 
+        $json = json_encode([
+            'message' => 'Transferencia cancelada com sucesso'
+        ]);
+
+        if ($json === false) {
+            throw new InternalErrorException(
+                'Error to parse json to return',
+                [ 'message' => 'Erro ao montar json de resposta.' ]
+            );
+        }
+
         $response->getBody()
-            ->write(json_encode([
-                'message' => 'Transferencia cancelada com sucesso'
-            ]));
+            ->write($json);
 
         return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json');
