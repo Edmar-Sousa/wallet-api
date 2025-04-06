@@ -39,7 +39,7 @@ class CustomException extends RuntimeException
     /**
      * returns an array representing the structure of the API response json
      * 
-     * @return array{code: string, errors: array<string, string>, status: string}
+     * @return array{'code': string, 'errors': array<string, string>, 'status': string}
      */
     final public function getErrorObject(): array
     {
