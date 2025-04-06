@@ -20,8 +20,8 @@ interface UseCaseTransferInterface
      * Business rules to create a transfer between two wallets
      * 
      * @param array{'payer': int, 'payee':int, 'value':float} $transferData
-     * @return Transfer
+     * @return array{'payer':int, 'payee': int, 'value': float}
      */
-    public function transferBetweenWallets(array $transferData): Transfer;
+    public function transferBetweenWallets(array $transferData): array;
 
 }
