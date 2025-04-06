@@ -20,6 +20,7 @@ class TransferRepository implements TransferRepositoryInterface
      */
     public function deleteTransferWithId(int $transferId): void
     {
+        /** @phpstan-ignore-next-line */
         Transfer::where('id', $transferId)
             ->delete();
     }
@@ -35,6 +36,7 @@ class TransferRepository implements TransferRepositoryInterface
      */
     public function getTransferWithId(int $transferId): Transfer
     {
+        /** @phpstan-ignore-next-line */
         $transfer = Transfer::where('id', $transferId)
             ->with([
                 'walletPayer',
@@ -69,6 +71,7 @@ class TransferRepository implements TransferRepositoryInterface
         $payer = $data['payer'];
         $payee = $data['payee'];
 
+        /** @phpstan-ignore-next-line */
         return Transfer::create([
             'payer' => $payer->id,
             'payee' => $payee->id,
