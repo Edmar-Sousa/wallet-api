@@ -61,17 +61,38 @@ class TransferController
     }
 
 
+    /**
+     * Method to create a transfer between two wallets
+     * 
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * 
+     * @return Response
+     */
     public function createTransfer(Request $request, Response $response): Response
     {
-        $data = json_decode($request->getBody()->getContents(), true);
+        // TODO: add validation before parse data
 
+        /**
+         * @var array{'payer': int, 'payee':int, 'value':float}
+         */
+        $data = json_decode($request->getBody()->getContents(), true);
 
         $transfer = $this->useCaseTransfer->transferBetweenWallets($data);
 
         // TODO: send notification
 
+        $json = json_encode($transfer);
+
+        if ($json === false) {
+            throw new InternalErrorException(
+                'Error to parse json to return',
+                [ 'message' => 'Erro ao montar json de resposta.' ]
+            );
+        }
+
         $response->getBody()
-            ->write(json_encode($transfer));
+            ->write($json);
 
         return $response->withStatus(201)
             ->withHeader('Content-Type', 'application/json');
