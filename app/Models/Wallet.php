@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $email
  * @property string $password
  * @property float $balance
- * @property WalletType $type
+ * @property int $type
  */
 class Wallet extends Model
 {
