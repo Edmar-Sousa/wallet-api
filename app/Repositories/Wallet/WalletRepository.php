@@ -119,10 +119,6 @@ class WalletRepository implements WalletRepositoryInterface
         $wallet = Wallet::where('id', $id)
             ->first();
 
-        if ($wallet !== null) {
-            $wallet->type = WalletType::from($wallet->type);
-        }
-
         return $wallet;
     }
 
@@ -140,10 +136,6 @@ class WalletRepository implements WalletRepositoryInterface
         $wallet = Wallet::where('id', $id)
             ->lockForUpdate()
             ->first();
-
-        if ($wallet !== null) {
-            $wallet->type = WalletType::from($wallet->type);
-        }
 
         return $wallet;
     }
