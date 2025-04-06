@@ -29,7 +29,7 @@ interface CacheInterface
      * 
      * @param string $channel
      * 
-     * @return array<string, mixed>|null
+     * @return array{'payee': int}|null
      */
     public function dequeueMessageToNotifier(string $channel): array|null;
 

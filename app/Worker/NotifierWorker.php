@@ -44,14 +44,25 @@ class NotifierWorker
         $this->notifierClient = new ClientNotifier();
     }
 
-
-    private function getWalletToNotifier(): array
+    /**
+     * Waiting and get events from queue and return
+     * 
+     * @return array{'payee': int}|null
+     */
+    private function getWalletToNotifier(): array|null
     {
         return $this->cacheClient->dequeueMessageToNotifier('notifier_transfer');
     }
 
 
-    private function notifierWallet(string $walletId)
+    /**
+     * Summary of notifierWallet
+     * 
+     * @param int $walletId
+     * 
+     * @return void
+     */
+    private function notifierWallet(int $walletId): void
     {
         $tries = 0;
 
@@ -74,11 +85,13 @@ class NotifierWorker
 
     public function run(): never
     {
+        /** @phpstan-ignore-next-line */
         while (true) {
             echo '[WORKER] Waiting by notifier events' . PHP_EOL;
             $notifierData = $this->getWalletToNotifier();
 
-            $this->notifierWallet($notifierData[1]);
+            if (is_array($notifierData))
+                $this->notifierWallet($notifierData['payee']);
         }
     }
 }

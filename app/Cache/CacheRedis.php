@@ -30,13 +30,13 @@ class CacheRedis implements CacheInterface
      * be executed
      * 
      * @param string $channel
-     * @param array<string, mixed> $data
+     * @param array{'payer': int} $data
      * 
      * @return void
      */
     public function enqueueMessageToNotifier(string $channel, array $data): void
     {
-        $this->redisClient->rpush($channel, $data);
+        $this->redisClient->rpush($channel,  [json_encode($data)]);
     }
 
 
@@ -49,10 +49,17 @@ class CacheRedis implements CacheInterface
      * 
      * @param string $channel
      * 
-     * @return array<string, mixed>|null
+     * @return array{'payee': int}|null
      */
     public function dequeueMessageToNotifier(string $channel): array|null
     {
-       return $this->redisClient->blpop($channel, 2000);
+        /** @var array<string> */
+        $eventData = $this->redisClient->blpop($channel, 10000);
+
+        if ($eventData)
+            $eventData = json_decode($eventData[1], true);
+
+        /** @var array{'payee': int} | null */
+        return $eventData;
     }
 }
