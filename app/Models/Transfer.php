@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transfer extends Model
 {
@@ -18,16 +19,5 @@ class Transfer extends Model
         'payee',
         'value',
     ];
-
-
-    public function walletPayee()
-    {
-        return $this->hasOne(Wallet::class, 'id', 'payee');
-    }
-
-    public function walletPayer()
-    {
-        return $this->hasOne(Wallet::class, 'id', 'payer');
-    }
 
 }
