@@ -22,6 +22,7 @@ class WalletRepository implements WalletRepositoryInterface
      */
     private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj): bool
     {
+        /** @phpstan-ignore-next-line */
         $wallet = Wallet::where('email', $email)
             ->orWhere('cpfCnpj', $cpfCnpj)
             ->first();
@@ -31,6 +32,7 @@ class WalletRepository implements WalletRepositoryInterface
 
     private function createWallet(array $data, WalletType $type): Wallet
     {
+        /** @phpstan-ignore-next-line */
         return Wallet::create([
             'fullname' => $data['fullname'],
             'cpfCnpj'  => $data['cpfCnpj'],
@@ -100,6 +102,7 @@ class WalletRepository implements WalletRepositoryInterface
      */
     public function getWallet(int $id): Wallet|null
     {
+        /** @phpstan-ignore-next-line */
         $wallet = Wallet::where('id', $id)
             ->first();
 
@@ -120,6 +123,7 @@ class WalletRepository implements WalletRepositoryInterface
      */
     public function getWalletForUpdate(int $id): Wallet|null
     {
+        /** @phpstan-ignore-next-line */
         $wallet = Wallet::where('id', $id)
             ->lockForUpdate()
             ->first();
@@ -132,16 +136,34 @@ class WalletRepository implements WalletRepositoryInterface
     }
 
 
+    /**
+     * This method debt an value from wallet
+     * 
+     * @param Wallet $wallet
+     * @param int $value
+     * 
+     * @return void
+     */
     public function debtWallet(Wallet $wallet, int $value): void
     {
+        /** @phpstan-ignore-next-line */
         Wallet::where('id', $wallet->id)
             ->update([
                 'balance' => $wallet->balance - $value
             ]);
     }
 
+    /**
+     * This method credit an value to wallet
+     * 
+     * @param Wallet $wallet
+     * @param int $value
+     * 
+     * @return void
+     */
     public function creditWallet(Wallet $wallet, int $value): void
     {
+        /** @phpstan-ignore-next-line */
         Wallet::where('id', $wallet->id)
             ->update([
                 'balance' => $wallet->balance + $value
