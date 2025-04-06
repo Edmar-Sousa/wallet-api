@@ -11,14 +11,28 @@ use App\Models\Transfer;
 class TransferRepository implements TransferRepositoryInterface
 {
 
-    public function deleteTransferWithId(int $transferId)
+    /**
+     * Deleta a transfer in database
+     * 
+     * @param int $transferId
+     * @return void
+     */
+    public function deleteTransferWithId(int $transferId): void
     {
         Transfer::where('id', $transferId)
             ->delete();
     }
 
 
-    public function getTransferWithId(int $transferId)
+    /**
+     * Return a transfer with id
+     * 
+     * @param int $transferId
+     * @throws \App\Exceptions\TransferNotFoundException
+     * 
+     * @return Transfer
+     */
+    public function getTransferWithId(int $transferId): Transfer
     {
         $transfer = Transfer::where('id', $transferId)
             ->with([
@@ -37,7 +51,18 @@ class TransferRepository implements TransferRepositoryInterface
         return $transfer;
     }
 
-    public function createTransfer(array $data)
+    /**
+     * Create transfer in database
+     * 
+     * @param array{
+     *    'payer': \App\Models\Wallet, 
+     *    'payee': \App\Models\Wallet, 
+     *    'value': int
+     * } $data
+     * 
+     * @return void
+     */
+    public function createTransfer(array $data): Transfer
     {
         $payer = $data['payer'];
         $payee = $data['payee'];
