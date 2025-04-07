@@ -9,6 +9,7 @@
 - MySql
 - PHP Unit
 - PHP Cs Fixer
+- PHP Stan
 
 ### End points
 - `/wallet/{id}` Exibe informações de uma carteira
