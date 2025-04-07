@@ -15,7 +15,7 @@ use App\Validators\Transfer\TransferValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class TransferController
+class TransferController extends Controller
 {
 
     private UseCaseTransferInterface $useCaseTransfer;
@@ -45,19 +45,10 @@ class TransferController
 
         $this->useCaseTransfer->cancelTransfer($transferId);
 
-        $json = json_encode([
-            'message' => 'Transferencia cancelada com sucesso'
-        ]);
-
-        if ($json === false) {
-            throw new InternalErrorException(
-                'Error to parse json to return',
-                [ 'message' => 'Erro ao montar json de resposta.' ]
-            );
-        }
-
         $response->getBody()
-            ->write($json);
+            ->write($this->json([
+                'message' => 'Transferencia cancelada com sucesso'
+            ]));
 
         return $response->withStatus(200)
             ->withHeader('Content-Type', 'application/json');

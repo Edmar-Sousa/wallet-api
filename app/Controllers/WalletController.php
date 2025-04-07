@@ -13,7 +13,7 @@ use App\Validators\Wallet\ValidatorFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class WalletController
+class WalletController extends Controller
 {
     private UseCaseWalletInterface $useCaseWallet;
 
@@ -38,17 +38,9 @@ class WalletController
     public function findWallet(Request $request, Response $response, array $args): Response
     {
         $wallet = $this->useCaseWallet->findWallet(intval($args['id']));
-        $json = json_encode($wallet);
-
-        if ($json === false) {
-            throw new InternalErrorException(
-                'Error to parse json to return',
-                [ 'message' => 'Erro ao montar json de resposta.' ]
-            );
-        }
 
         $response->getBody()
-            ->write($json);
+            ->write($this->json($wallet));
 
         return $response->withStatus(201)
             ->withHeader('Content-Type', 'application/json');
@@ -79,17 +71,8 @@ class WalletController
 
         $wallet = $this->useCaseWallet->createWallet($data, WalletType::USER);
 
-        $json = json_encode($wallet);
-
-        if ($json === false) {
-            throw new InternalErrorException(
-                'Error to parse json to return',
-                [ 'message' => 'Erro ao montar json de resposta.' ]
-            );
-        }
-
         $response->getBody()
-            ->write($json);
+            ->write($this->json($wallet));
 
         return $response->withStatus(201)
             ->withHeader('Content-Type', 'application/json');
@@ -124,17 +107,9 @@ class WalletController
 
 
         $wallet = $this->useCaseWallet->createWallet($data, WalletType::MERCHANT);
-        $json = json_encode($wallet);
-
-        if ($json === false) {
-            throw new InternalErrorException(
-                'Error to parse json to return',
-                [ 'message' => 'Erro ao montar json de resposta.' ]
-            );
-        }
-
+        
         $response->getBody()
-            ->write($json);
+            ->write($this->json($wallet));
 
         return $response->withStatus(201)
             ->withHeader('Content-Type', 'application/json');
