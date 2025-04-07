@@ -11,6 +11,7 @@ use App\Interfaces\UseCaseTransferInterface;
 use App\Repositories\Transfer\TransferRepository;
 use App\Repositories\Wallet\WalletRepository;
 use App\UseCases\UseCaseTransfer;
+use App\Validators\Transfer\TransferValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -73,13 +74,14 @@ class TransferController
      */
     public function createTransfer(Request $request, Response $response): Response
     {
-        // TODO: add validation before parse data
+        $validatorTransfer = new TransferValidator();
 
         /**
          * @var array{'payer': int, 'payee':int, 'value':float}
          */
         $data = json_decode($request->getBody()->getContents(), true);
 
+        $validatorTransfer->validate($data);
         $transfer = $this->useCaseTransfer->transferBetweenWallets($data);
 
         $cacheClient = CacheFactory::create(CacheType::REDIS);
