@@ -2,17 +2,16 @@
 
 namespace App\Interfaces;
 
+/**
+ * @template T of array
+ */
 interface ValidatorInterface
 {
+
     /**
-     * Apply rules to validate data to store wallet
+     * Apply rules to validate data
      * 
-     * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
-     * } $data
+     * @param T $data
      * 
      * @return void
      */
