@@ -43,7 +43,10 @@ class TransferController extends Controller
     {
         $transferId = intval($args['id']);
 
-        $this->useCaseTransfer->cancelTransfer($transferId);
+        $transfer = $this->useCaseTransfer->cancelTransfer($transferId);
+
+        $cacheClient = CacheFactory::create(CacheType::REDIS);
+        $cacheClient->enqueueMessageToNotifier('notifier_transfer', [ 'payee' => $transfer['payee'] ]);
 
         $response->getBody()
             ->write($this->json([
