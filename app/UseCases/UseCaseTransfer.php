@@ -65,9 +65,9 @@ class UseCaseTransfer implements UseCaseTransferInterface
      * Business rules to cancel a transfer between two wallets
      * 
      * @param int $transferId
-     * @return void
+     * @return array{'payer': int, 'payee': int, value: float}
      */
-    public function cancelTransfer(int $transferId): void
+    public function cancelTransfer(int $transferId): array
     {
         $transfer = $this->transferRepository->getTransferWithId($transferId);
         $amountTransfer = intval($transfer->value);
@@ -98,6 +98,12 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
             /** @phpstan-ignore-next-line */
             Capsule::commit();
+
+            return [
+                'payer' => $walletPayer->id,
+                'payee' => $walletPayee->id,
+                'value' => floatval($amountTransfer / 100)
+            ];
         } catch (RuntimeException $e) {
             /** @phpstan-ignore-next-line */
             Capsule::rollBack();

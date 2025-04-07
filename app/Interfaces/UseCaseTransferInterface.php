@@ -12,9 +12,9 @@ interface UseCaseTransferInterface
      * Business rules to cancel a transfer between two wallets
      * 
      * @param int $transferId
-     * @return void
+     * @return array{'payer': int, 'payee': int, value: float}
      */
-    public function cancelTransfer(int $transferId): void;
+    public function cancelTransfer(int $transferId): array;
 
     /**
      * Business rules to create a transfer between two wallets
