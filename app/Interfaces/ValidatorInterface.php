@@ -7,12 +7,11 @@ namespace App\Interfaces;
  */
 interface ValidatorInterface
 {
-
     /**
      * Apply rules to validate data
-     * 
+     *
      * @param T $data
-     * 
+     *
      * @return void
      */
     public function validate(array $data): void;

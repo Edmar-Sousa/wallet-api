@@ -12,9 +12,9 @@ class ValidatorFactory
 {
     /**
      * Factory to create validator class
-     * 
+     *
      * @param \App\Enums\WalletType $walletType
-     * 
+     *
      * @throws \RuntimeException
      * @return WalletMerchantValidator|WalletUserValidator
      */

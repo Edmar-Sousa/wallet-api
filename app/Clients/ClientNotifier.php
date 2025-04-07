@@ -23,7 +23,7 @@ class ClientNotifier
 
     /**
      * Send notifier API
-     * 
+     *
      * @throws \RuntimeException
      * @return array{'status': string, 'statusCode': int, 'message'?: string}
      */

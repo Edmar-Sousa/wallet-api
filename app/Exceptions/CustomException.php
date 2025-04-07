@@ -20,11 +20,11 @@ class CustomException extends RuntimeException
 
     /**
      * Base exception to create a response to API
-     * 
+     *
      * @param string $log
      * @param string $code
      * @param int $statusCode
-     * 
+     *
      * @param array<string, string> $messages
      */
     public function __construct(string $log, string $code, int $statusCode, array $messages = [])
@@ -38,7 +38,7 @@ class CustomException extends RuntimeException
 
     /**
      * returns an array representing the structure of the API response json
-     * 
+     *
      * @return array{'code': string, 'errors': array<string, string>, 'status': string}
      */
     final public function getErrorObject(): array

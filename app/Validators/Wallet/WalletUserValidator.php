@@ -11,7 +11,7 @@ use Respect\Validation\Validator as v;
 
 /**
  * Apply rules to validate data to store wallet
- * 
+ *
  * @implements ValidatorInterface<array{
  *     fullname: string,
  *     cpfCnpj: string,
@@ -23,7 +23,7 @@ class WalletUserValidator implements ValidatorInterface
 {
     /**
      * Apply rules to validate data to store wallet
-     * 
+     *
      * @return void
      */
     public function validate(array $data): void

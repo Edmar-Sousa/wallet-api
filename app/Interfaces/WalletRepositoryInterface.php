@@ -11,14 +11,14 @@ interface WalletRepositoryInterface
 {
     /**
      * Method to store wallet user in database
-     * 
+     *
      * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
+     *  "fullname": string,
+     *  "cpfCnpj": string,
+     *  "email": string,
+     *  "password": string
      * } $data
-     * 
+     *
      * @throws CreateWalletException
      * @return Wallet
      */
@@ -26,14 +26,14 @@ interface WalletRepositoryInterface
 
     /**
      * Method to store wallet merchant in database
-     * 
+     *
      * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
+     *  "fullname": string,
+     *  "cpfCnpj": string,
+     *  "email": string,
+     *  "password": string
      * } $data
-     * 
+     *
      * @throws CreateWalletException
      * @return Wallet
      */
@@ -42,7 +42,7 @@ interface WalletRepositoryInterface
 
     /**
      * Method to get wallet with id from database
-     * 
+     *
      * @param int $id
      * @return Wallet|null
      */
@@ -51,7 +51,7 @@ interface WalletRepositoryInterface
     /**
      * Method to get wallet with id from database to update.
      * This method lock the register to prevent race condition
-     * 
+     *
      * @param int $id
      * @return Wallet|null
      */
@@ -59,20 +59,20 @@ interface WalletRepositoryInterface
 
     /**
      * This method debt an value from wallet
-     * 
+     *
      * @param Wallet $wallet
      * @param int $value
-     * 
+     *
      * @return void
      */
     public function debtWallet(Wallet $wallet, int $value): void;
 
     /**
      * This method credit an value to wallet
-     * 
+     *
      * @param Wallet $wallet
      * @param int $value
-     * 
+     *
      * @return void
      */
     public function creditWallet(Wallet $wallet, int $value): void;

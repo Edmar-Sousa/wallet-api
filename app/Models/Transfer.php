@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Class Transfer
- * 
+ *
  * @property int $payer
  * @property int $payee
  * @property int $value
- * 
+ *
  * @property-read Wallet $walletPayee
  * @property-read Wallet $walletPayer
  */
@@ -33,7 +33,7 @@ class Transfer extends Model
 
     /**
      * Return the wallet of payee relationship
-     * 
+     *
      * @return HasOne<Wallet, $this>
      */
     public function walletPayee(): HasOne
@@ -44,7 +44,7 @@ class Transfer extends Model
 
     /**
      * Return the wallet of payer relationship
-     * 
+     *
      * @return HasOne<Wallet, $this>
      */
     public function walletPayer(): HasOne

@@ -8,7 +8,7 @@ class CreateWalletException extends CustomException
 {
     /**
      * Create an internal error exception
-     * 
+     *
      * @param string $log
      * @param array<string, string> $messages
      */

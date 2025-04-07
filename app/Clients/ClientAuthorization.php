@@ -22,7 +22,7 @@ class ClientAuthorization
 
     /**
      * Send a http request to check if transfer is authorized and return the result
-     * 
+     *
      * @throws \RuntimeException
      * @return array{'status': string, 'data': array{'authorization': bool} }
      */

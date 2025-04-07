@@ -17,7 +17,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class TransferController extends Controller
 {
-
     private UseCaseTransferInterface $useCaseTransfer;
 
     public function __construct()
@@ -30,12 +29,12 @@ class TransferController extends Controller
 
     /**
      * Method to cancel transfer between two wallets
-     * 
+     *
      * @throws InternalErrorException
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @param array{'id': string} $args
      * @return Response
      */
@@ -60,10 +59,10 @@ class TransferController extends Controller
 
     /**
      * Method to create a transfer between two wallets
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @return Response
      */
     public function createTransfer(Request $request, Response $response): Response
@@ -80,8 +79,8 @@ class TransferController extends Controller
 
         $cacheClient = CacheFactory::create(CacheType::REDIS);
         $cacheClient->enqueueMessageToNotifier('notifier_transfer', [ 'payee' => $transfer['payee'] ]);
-        
-        
+
+
         $json = json_encode($transfer);
 
         if ($json === false) {

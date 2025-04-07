@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Wallet
- * 
+ *
  * @property int $id
  * @property string $fullname
  * @property string $cpfCnpj
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $password
  * @property float $balance
  * @property int $type
- * 
+ *
  * @property WalletType $walletType
  */
 class Wallet extends Model
@@ -42,9 +42,9 @@ class Wallet extends Model
 
 
     /**
-     * This method convert the value of type column to 
+     * This method convert the value of type column to
      * Wallet Type Enum
-     * 
+     *
      * @return WalletType
      */
     public function getWalletTypeAttribute(): WalletType

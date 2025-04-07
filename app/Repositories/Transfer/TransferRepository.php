@@ -11,10 +11,9 @@ use App\Models\Wallet;
 
 class TransferRepository implements TransferRepositoryInterface
 {
-
     /**
      * Deleta a transfer in database
-     * 
+     *
      * @param int $transferId
      * @return void
      */
@@ -28,10 +27,10 @@ class TransferRepository implements TransferRepositoryInterface
 
     /**
      * Return a transfer with id
-     * 
+     *
      * @param int $transferId
      * @throws \App\Exceptions\TransferNotFoundException
-     * 
+     *
      * @return Transfer
      */
     public function getTransferWithId(int $transferId): Transfer
@@ -56,13 +55,13 @@ class TransferRepository implements TransferRepositoryInterface
 
     /**
      * Create transfer in database
-     * 
+     *
      * @param array{
-     *    'payer': \App\Models\Wallet, 
-     *    'payee': \App\Models\Wallet, 
+     *    'payer': \App\Models\Wallet,
+     *    'payee': \App\Models\Wallet,
      *    'value': int
      * } $data
-     * 
+     *
      * @return Transfer
      */
     public function createTransfer(array $data): Transfer

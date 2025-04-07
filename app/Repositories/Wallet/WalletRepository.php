@@ -14,10 +14,10 @@ class WalletRepository implements WalletRepositoryInterface
     /**
      * This method check if already exists an register with email
      * or cpfCnpj
-     * 
+     *
      * @param string $email
      * @param string $cpfCnpj
-     * 
+     *
      * @return bool
      */
     private function hasWalletWithEmailOrCpfCnpj(string $email, string $cpfCnpj): bool
@@ -32,15 +32,15 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * Store wallet in table
-     * 
+     *
      * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
+     *  "fullname": string,
+     *  "cpfCnpj": string,
+     *  "email": string,
+     *  "password": string
      * } $data
      * @param \App\Enums\WalletType $type
-     * 
+     *
      * @return Wallet
      */
     private function createWallet(array $data, WalletType $type): Wallet
@@ -58,14 +58,14 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * Method to store wallet user in database
-     * 
+     *
      * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
+     *  "fullname": string,
+     *  "cpfCnpj": string,
+     *  "email": string,
+     *  "password": string
      * } $data
-     * 
+     *
      * @throws CreateWalletException
      * @return Wallet
      */
@@ -83,14 +83,14 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * Method to store wallet merchant in database
-     * 
+     *
      * @param array{
-     *  "fullname": string, 
-     *  "cpfCnpj": string, 
-     *  "email": string, 
-     *  "password": string 
+     *  "fullname": string,
+     *  "cpfCnpj": string,
+     *  "email": string,
+     *  "password": string
      * } $data
-     * 
+     *
      * @throws CreateWalletException
      * @return Wallet
      */
@@ -109,7 +109,7 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * Method to get wallet with id from database
-     * 
+     *
      * @param int $id
      * @return Wallet|null
      */
@@ -126,7 +126,7 @@ class WalletRepository implements WalletRepositoryInterface
     /**
      * Method to get wallet with id from database to update.
      * This method lock the register to prevent race condition
-     * 
+     *
      * @param int $id
      * @return Wallet|null
      */
@@ -143,10 +143,10 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * This method debt an value from wallet
-     * 
+     *
      * @param Wallet $wallet
      * @param int $value
-     * 
+     *
      * @return void
      */
     public function debtWallet(Wallet $wallet, int $value): void
@@ -160,10 +160,10 @@ class WalletRepository implements WalletRepositoryInterface
 
     /**
      * This method credit an value to wallet
-     * 
+     *
      * @param Wallet $wallet
      * @param int $value
-     * 
+     *
      * @return void
      */
     public function creditWallet(Wallet $wallet, int $value): void

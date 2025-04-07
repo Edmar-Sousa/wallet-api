@@ -26,13 +26,13 @@ class WalletController extends Controller
 
     /**
      * Get data of wallet and return a json
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
      * @param array{'id': int} $args
      *
      * @throws InternalErrorException
-     *  
+     *
      * @return Response
      */
     public function findWallet(Request $request, Response $response, array $args): Response
@@ -48,20 +48,20 @@ class WalletController extends Controller
 
     /**
      * Create a new wallet of type user
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @return Response
      */
     public function createWallet(Request $request, Response $response): Response
     {
         /**
          * @var array{
-         *  "fullname": string, 
-         *  "cpfCnpj": string, 
-         *  "email": string, 
-         *  "password": string 
+         *  "fullname": string,
+         *  "cpfCnpj": string,
+         *  "email": string,
+         *  "password": string
          * }
          */
         $data = json_decode($request->getBody()->getContents(), true);
@@ -82,32 +82,32 @@ class WalletController extends Controller
 
     /**
      * Create a wallet to merchant
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
-     * 
+     *
      * @throws InternalErrorException
-     * 
+     *
      * @return Response
      */
     public function createMerchantWallet(Request $request, Response $response): Response
     {
         /**
          * @var array{
-         *  "fullname": string, 
-         *  "cpfCnpj": string, 
-         *  "email": string, 
-         *  "password": string 
+         *  "fullname": string,
+         *  "cpfCnpj": string,
+         *  "email": string,
+         *  "password": string
          * }
          */
         $data = json_decode($request->getBody()->getContents(), true);
-        
+
         $walletValidator = ValidatorFactory::create(WalletType::MERCHANT);
         $walletValidator->validate($data);
 
 
         $wallet = $this->useCaseWallet->createWallet($data, WalletType::MERCHANT);
-        
+
         $response->getBody()
             ->write($this->json($wallet));
 

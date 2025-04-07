@@ -29,9 +29,8 @@ $dotenv->load();
 
 
 
-class NotifierWorker 
+class NotifierWorker
 {
-
     private CacheInterface $cacheClient;
     private ClientNotifier $notifierClient;
 
@@ -46,7 +45,7 @@ class NotifierWorker
 
     /**
      * Waiting and get events from queue and return
-     * 
+     *
      * @return array{'payee': int}|null
      */
     private function getWalletToNotifier(): array|null
@@ -57,9 +56,9 @@ class NotifierWorker
 
     /**
      * Summary of notifierWallet
-     * 
+     *
      * @param int $walletId
-     * 
+     *
      * @return void
      */
     private function notifierWallet(int $walletId): void
@@ -69,7 +68,7 @@ class NotifierWorker
         while ($tries++ < $this->maxRetries) {
             echo '[WORKER] Try notifier payee: ' . $walletId . PHP_EOL;
             $response = $this->notifierClient->notifierPayeeUser();
-            
+
             if ($response['statusCode'] == 204) {
                 echo '[WORKER] Notifier with success' . PHP_EOL;
                 break;
@@ -79,8 +78,9 @@ class NotifierWorker
             sleep(1);
         }
 
-        if ($tries >= $this->maxRetries)
+        if ($tries >= $this->maxRetries) {
             echo '[WORKER] Maximum number of attempts exceeded' . PHP_EOL;
+        }
     }
 
     public function run(): never
@@ -90,8 +90,9 @@ class NotifierWorker
             echo '[WORKER] Waiting by notifier events' . PHP_EOL;
             $notifierData = $this->getWalletToNotifier();
 
-            if (is_array($notifierData))
+            if (is_array($notifierData)) {
                 $this->notifierWallet($notifierData['payee']);
+            }
         }
     }
 }

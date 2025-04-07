@@ -11,19 +11,18 @@ use App\Interfaces\ValidatorInterface;
 
 /**
  * Apply rules to validate data to store transfer
- * 
+ *
  * @implements ValidatorInterface<array{
- *   "payer": int, 
- *   "payee": int, 
- *   "value": float 
+ *   "payer": int,
+ *   "payee": int,
+ *   "value": float
  * }>
  */
 class TransferValidator implements ValidatorInterface
 {
-
     /**
      * Apply rules to validate data
-     * 
+     *
      * @return void
      */
     public function validate(array $data): void
@@ -42,9 +41,7 @@ class TransferValidator implements ValidatorInterface
             );
 
             $validator->validate($data);
-        }
-
-        catch (NestedValidationException $err) {
+        } catch (NestedValidationException $err) {
             $messages = $err->getMessages();
 
             throw new ValidationException(

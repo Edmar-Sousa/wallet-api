@@ -8,10 +8,8 @@ use App\Exceptions\CustomException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-
 use Slim\Psr7\Response as SlimResponse;
 use Exception;
-
 
 class ErrorHandlingMiddleware
 {
@@ -28,7 +26,7 @@ class ErrorHandlingMiddleware
                 ->withAddedHeader('Content-Type', 'application/json');
 
             $response->getBody()
-                ->write((string) json_encode( $err->getErrorObject()));
+                ->write((string) json_encode($err->getErrorObject()));
 
             return $response;
         } catch (Exception $err) {
@@ -37,7 +35,7 @@ class ErrorHandlingMiddleware
                 ->withAddedHeader('Content-Type', 'application/json');
 
             $response->getBody()
-                ->write( (string) json_encode([
+                ->write((string) json_encode([
                     'status' => 500,
                     'code' => 'internal_error',
                     'errors' => [

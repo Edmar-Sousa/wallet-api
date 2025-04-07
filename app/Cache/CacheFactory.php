@@ -8,15 +8,13 @@ use App\Enums\CacheType;
 use App\Interfaces\CacheInterface;
 use RuntimeException;
 
-
 class CacheFactory
 {
-
     /**
      * Factory to create client cache
-     * 
+     *
      * @param \App\Enums\CacheType $cacheType
-     * 
+     *
      * @throws \RuntimeException
      * @return CacheInterface
      */

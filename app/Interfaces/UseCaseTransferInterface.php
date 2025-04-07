@@ -7,10 +7,9 @@ use App\Models\Wallet;
 
 interface UseCaseTransferInterface
 {
-
     /**
      * Business rules to cancel a transfer between two wallets
-     * 
+     *
      * @param int $transferId
      * @return array{'payer': int, 'payee': int, value: float}
      */
@@ -18,7 +17,7 @@ interface UseCaseTransferInterface
 
     /**
      * Business rules to create a transfer between two wallets
-     * 
+     *
      * @param array{'payer': int, 'payee':int, 'value':float} $transferData
      * @return array{'payer':int, 'payee': int, 'value': float}
      */

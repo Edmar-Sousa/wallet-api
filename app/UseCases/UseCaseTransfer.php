@@ -32,14 +32,14 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
 
     /**
-     * This method check if the wallets exists to 
+     * This method check if the wallets exists to
      * continue transfer
-     * 
+     *
      * @param \App\Models\Wallet|null $payer
      * @param \App\Models\Wallet|null $payee
-     * 
+     *
      * @throws \App\Exceptions\WalletNotFoundException
-     * 
+     *
      * @return void
      */
     private function checksWalletsExists(Wallet|null $payer, Wallet|null $payee): void
@@ -63,7 +63,7 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
     /**
      * Business rules to cancel a transfer between two wallets
-     * 
+     *
      * @param int $transferId
      * @return array{'payer': int, 'payee': int, value: float}
      */
@@ -113,12 +113,12 @@ class UseCaseTransfer implements UseCaseTransferInterface
     }
 
     /**
-     * This function check if wallet is alowed to transfer 
+     * This function check if wallet is alowed to transfer
      * balance
-     * 
+     *
      * @param \App\Models\Wallet $walletPayer
      * @throws \App\Exceptions\WalletMerchantException
-     * 
+     *
      * @return void
      */
     private function checkWalletAllowedToTransfer(Wallet $walletPayer)
@@ -133,12 +133,12 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
 
     /**
-     * This function check if the wallet has balance to complete 
+     * This function check if the wallet has balance to complete
      * the transfer
-     * 
+     *
      * @param \App\Models\Wallet $walletPayer
      * @param int $amount
-     * 
+     *
      * @throws \App\Exceptions\WalletBalanceInsufficientException
      * @return void
      */
@@ -155,7 +155,7 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
     /**
      * Business rules to create a transfer between two wallets
-     * 
+     *
      * @param array{'payer': int, 'payee':int, 'value':float} $transferData
      * @return array{'payer':int, 'payee': int, 'value': float}
      */
@@ -168,11 +168,11 @@ class UseCaseTransfer implements UseCaseTransferInterface
 
 
         $this->checksWalletsExists($walletPayer, $walletPayee);
-        
-        /** 
+
+        /**
          * In this point the method checksWalletsExists already validate the
          * wallet payer and wallet payee exists.
-         * 
+         *
          * @var \App\Models\Wallet $walletPayer
          * @var \App\Models\Wallet $walletPayee
          */
